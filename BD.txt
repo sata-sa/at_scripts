@@ -1,0 +1,143 @@
+
+
+
+
+=====================================================================================================================================================
+
+select * from dba_users where DEFAULT_TABLESPACE = 'UAT_SOAINFRA' ;
+
+select * from v$session WHERE SCHEMANAME = 'UAT_SOAINFRA' ;
+
+
+=====================================================================================================================================================
+
+select 'alter system kill session '''||a.sid||','||a.serial#||''' immediate;'
+from
+   v$session    a,
+   v$sort_usage b,
+   v$process    c,
+   v$parameter  d
+where
+   d.name = 'db_block_size'
+and
+   a.saddr = b.session_addr
+and
+   a.paddr = c.addr
+and
+   b.tablespace='UAT_IAS_TEMP'
+order by
+   b.tablespace,
+   b.segfile#,
+   b.segblk#,
+   b.blocks;
+
+
+=====================================================================================================================================================
+
+alter tablespace PRICE_CALC offline;
+alter tablespace PRICE_CALC rename datafile '/oracleData/PRICE_CALC.DBF' to '/oracleData/oradata/m2m/PRICE_CALC.DBF';
+alter tablespace PRICE_CALC online;
+
+
+============== Shrink Tablespaces ===================================================================================================================
+ 
+## como oracle executar
+ 
+export ORACLE_SID=M2MIITCUAT
+sqlplus / as sysdba 
+  
+SQL> show parameter background
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+background_core_dump                 string      partial
+background_dump_dest                 string      /u01/app/oracle/diag/rdbms/m2miitcuat/M2MIITCUAT/trace 
+
+comando de shrink
+alter tablespace CMP shrink space ;
+
+SELECT DISTINCT owner FROM dba_segments WHERE TABLESPACE_NAME='SYSAUX';
+
+
+============== Criar novo Schema/User ===============================================================================================================
+
+--TABLESPACE
+CREATE TABLESPACE BATATAS DATAFILE  '/u01/oradata/M2MIITCUAT/BATATAS.dbf' SIZE 8M AUTOEXTEND ON NEXT 8M MAXSIZE 2G 
+LOGGING ONLINE PERMANENT EXTENT MANAGEMENT LOCAL AUTOALLOCATE BLOCKSIZE 32K SEGMENT SPACE MANAGEMENT AUTO FLASHBACK ON;
+
+## Nota: O user e password deverão ser lower_case
+-- USER SQL
+CREATE USER BATATAS IDENTIFIED BY batatinhas
+DEFAULT TABLESPACE "BATATAS"
+TEMPORARY TABLESPACE "TEMP"
+ACCOUNT UNLOCK ;
+
+## Nota: Se o comando falhar, executar manualmente atribuição de permissões.
+-- ROLES
+ALTER USER "BATATAS" DEFAULT ROLE "RESOURCE","CONNECT";
+GRANT "RESOURCE","CONNECT" TO "BATATAS"
+
+
+=====================================================================================================================================================
+
+select username ,account_status from dba_users where ACCOUNT_STATUS  != 'OPEN';
+
+alter profile DEFAULT limit password_life_time UNLIMITED;
+
+alter user SOAF_PUBLISHER identified by SOAF#Cel23;
+alter user MDS identified by MDS#Cel23;
+alter user SOAINFRA identified by SOAINFRA#Cel23;
+alter user ORASDPM identified by ORASDPM#Cel23;
+alter user OMP identified by OMP#Cel23;
+
+commit;
+
+
+=====================================================================================================================================================
+
+expdp \"sys/0racle! as sysdba\" DUMPFILE=CMP_EBUA_L1.dmp DIRECTORY=DUMPS LOGFILE=expdp_CMP_EBUA_L1.log schemas=CMP_EBUA_L1
+impdp \"sys/0racle! as sysdba\" remap_schema='CMP_EBUA_L1':'CMP_EBUA_L2' remap_tablespace='CMP_EBUA_L1':'CMP_EBUA_L2' DUMPFILE=CMP_EBUA_L1.dmp DIRECTORY=DUMPS LOGFILE=impdp_CMP_EBUA_L2.log
+
+expdp \"/ as sysdba\" DUMPFILE=HOM.dmp DIRECTORY=DUMPS LOGFILE=expdp_HOM.log schemas=HOM
+impdp \"/ as sysdba\" DUMPFILE=HOM.dmp DIRECTORY=EXPORTDIR LOGFILE=impdp_HOM.log
+
+
+=====================================================================================================================================================
+
+BEGIN
+  FOR r IN (select * FROM v$session where last_call_et /60/60 > 1 and (username != '(null)'))
+  LOOP
+      EXECUTE IMMEDIATE 'alter system kill session ''' || r.sid  || ',' 
+        || r.serial# || ''' immediate';
+  END LOOP;
+END;
+
+
+=====================================================================================================================================================
+
+select sql_text from v$sql where sql_id='30bxj5mq0mg97';
+
+
+=====================================================================================================================================================
+
+GRANT DBA TO AMUSER;
+
+REVOKE DBA FROM AMUSER;
+
+alter profile DEFAULT limit password_life_time UNLIMITED;
+
+
+=====================================================================================================================================================
+
+select * from DBA_USERS order by CREATED DESC;
+
+
+=====================================================================================================================================================
+
+alter system set processes=200 scope=spfile;
+
+show parameter processes;
+
+shutdown immediate
+
+startup

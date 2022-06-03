@@ -1,0 +1,28 @@
+$blobName = "m2miitcsit01_new_capture-os-2017-01-27-4052EEFA.vhd" 
+
+# Source Storage Account Information #
+$sourceStorageAccountName = "m2miitcsit01"
+$sourceKey = "bVhlyQpAT18A3HEUp/3Tod5qnImk6ksLhtQUT/3ZeLHTSwtv0z+h4RyRJq+jGIvExitlIO9zG9pSfOtkisjH4w=="
+$sourceContext = New-AzureStorageContext –StorageAccountName $sourceStorageAccountName -StorageAccountKey $sourceKey  
+$sourceContainer = "vhds"
+
+# Destination Storage Account Information #
+$destinationStorageAccountName = "portalvhdsfkwgvp6y6bggd"
+$destinationKey = "5CbsQ8yP4z9sbLJXV87NiiDsy94gIt+B+IUvHlAnFRYqCaFPWRo7aMTVB2s4ITpg6Ik3qep6k7XX0RKC+SKleA=="
+$destinationContext = New-AzureStorageContext –StorageAccountName $destinationStorageAccountName -StorageAccountKey $destinationKey  
+
+# Create the destination container #
+$destinationContainerName = "vhds"
+
+# Copy the blob # 
+$blobCopy = Start-AzureStorageBlobCopy -DestContainer $destinationContainerName `
+                        -DestContext $destinationContext `
+                        -SrcBlob $blobName `
+                        -Context $sourceContext `
+                        -SrcContainer $sourceContainer
+
+
+						
+AzCopy /Source:https://portalvhdsfkwgvp6y6bggd.blob.core.windows.net/m2miitcsit01container/m2miitcsit01-capture-os-2017-01-27-112DB1C2_2.vhd /Dest:storageexplorer://v=1&accountid=%2Fsubscriptions%2Fbc3321f8-9d03-499c-8347-89cc51e80f10%2FresourceGroups%2FDefault-Storage-WestEurope%2Fproviders%2FMicrosoft.ClassicStorage%2FstorageAccounts%2Fportalvhdsfkwgvp6y6bggd&subscriptionid=bc3321f8-9d03-499c-8347-89cc51e80f10&resourcetype=Azure.BlobContainer&resourcename=vhds /SourceKey:key /DestKey:key /Pattern:abc.txt
+
+$status = $blobCopy | Get-AzureStorageBlobCopyState 

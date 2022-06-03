@@ -1,0 +1,31 @@
+﻿## Diogo Santos - 2018.01.19
+## Não é possivel adicionar uma maquina a um availability-set, a unica solução é apagar e recriar a maquina.
+
+Antes de apagar a maquina, é necessario recolher:
+- name (hostname)
+- nome da nic
+- size
+- SO
+- URI dos discos (no caso de serem unmanaged)
+
+Depois é construir o comando e executar no CLI no Azure
+
+#########################################
+####Exemplo para a maquina m2mportalsit02
+
+az vm create --resource-group SG_IoT_Global-RG --name m2mportalsit01 --nics m2mportalsit01-PrimaryNic --size Standard_A2m_v2 --os-type Linux --availability-set m2m-vodafone --use-unmanaged-disk --attach-os-disk https://portalvhdsfkwgvp6y6bggd.blob.core.windows.net/vhds/m2mportalsit01-os.vhd
+
+az vm create --resource-group SG_IoT_Global-RG --name m2mportalsit03 --nics m2mportalsit03-PrimaryNic --size Standard_A2m_v2 --os-type Linux --availability-set m2m-vodafone --use-unmanaged-disk --attach-os-disk https://m2menvsit02.blob.core.windows.net/vhds/m2mportalsit03-os.vhd
+
+
+
+#########################################
+#### nota: nao esquecer de recriar o alerta de networOut
+exemplo para: m2mportalsit02 - Network OUT
+Greater Than: 20000000
+Over the last 30minutes
+
+Nao deve estar seleccionado o "Email owners, contributers, and readers"
+Additional administrator email(s): vfg_iot_env_management@celfocus.com
+
+Done.

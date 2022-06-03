@@ -1,0 +1,165 @@
+###############Global info##################
+#Provide subscription username
+#$username="admin@celfocusoneit.onmicrosoft.com"
+#$password="XXXXXXXXXXX"
+#Provide the name of the resource group
+$resourceGroupName="SG_IoT_Global-RG"
+#Provide VM name
+$vmname="m2mosbdev1"
+#Provide Nic name
+$nicname="$vmname-nic"
+
+###############PIP Info #Optional for PIP#######
+#Provide Public IP Name
+$pipname= "$vmname-PIP"
+$piptype= "Dynamic" # Dynamic or Static
+$pipvalidation="no" #yes to create and add PIP | no to ignore
+
+###############NIC Info####################
+#Provide Virtual Network Name
+$vnetname="Cloud-Novabase-Network"
+#Provide Subnet Name
+$subnetname="N10-254-3_Subnet-1"
+#Provide Private IP Adress to be lessed
+$pip="10.254.3.18"
+#Provide Security Group Name
+$sgname="Safe_Access_From_Internet"
+#Provide IP configurations Name
+$ipconfigname ="ipconfig1" #Optional for PIP
+
+################VM Info####################
+#Provide image name to be deploy
+$imagename="Centos7-Base_AZ_v2"
+
+#Provide VM Size
+$vmsize="Standard_A2m_v2"
+
+###########################################
+
+Write-Host "#####################################Azure Custom Image#################################" -ForegroundColor Yellow
+Write-Host "The purpose of this script is to create a Azure VM using Celfocus Custome Imagem" -ForegroundColor Red
+Write-Host "This script contains specific and confidential information to ENVIRONMENT MANAGEMENT TEAM" -ForegroundColor Red
+Write-Host " "
+Write-Host "Just use this on subscrition:"
+Write-Host "ID: bc3321f8-9d03-499c-8347-89cc51e80f10"
+Write-Host "Name: Enterprise"
+Write-Host " "
+Write-Host "Script author: NB18354-Joao Pedrosa" -ForegroundColor DarkGreen
+Write-Host "Last Change: 17/05/2018" -ForegroundColor DarkGreen
+Write-Host " "
+$date = Get-Date
+Write-Host "Start date: $date"
+Write-Host "#########################################################################################" -ForegroundColor Yellow
+Write-Host " "
+
+az account show
+if ( $? -eq 'True'){
+    Write-Host "Starting . . . ."
+    #create nic
+    Write-Host "1- Creating nic . . . ."
+    az network nic create --resource-group $resourceGroupName --vnet-name $vnetname --subnet $subnetname --name $nicname --private-ip-address $pip --network-security-group $sgname
+
+    if ( $? -eq 'True'){
+        Write-Host "Nic $nicname created" -ForegroundColor Green
+        
+    }
+    else{
+        Write-Host "ERROR !!!" -ForegroundColor Red
+        Write-Host "Error creating NIC - $nicname" -ForegroundColor Red
+        Write-Host "Exit code after ERROR creating the NIC" -ForegroundColor Red
+        $date = Get-Date
+        Write-Host "Finish date: $date"
+        exit
+    }
+
+    #create VM
+    Write-Host "2- Creating VM . . . ."
+    az vm create --resource-group $resourceGroupName --image $imagename --name $vmname --admin-username celfocus --admin-password Celfocus2018 --nics $nicname --size $vmsize --os-disk-name $vmname-osdisk
+
+    if ( $? -eq 'True'){
+        Write-Host "VM $vmname created" -ForegroundColor Green
+        
+    }
+    else{
+        Write-Host "ERROR !!!" -ForegroundColor Red
+        Write-Host "Error creating VM - $vmname" -ForegroundColor Red
+        Write-Host "Deleting NIC - $nicname . . ." -ForegroundColor Red
+        az network nic delete --resource-group $resourceGroupName --name $nicname
+        if ( $? -eq 'True'){
+            Write-Host "Nic $nicname Deleted" -ForegroundColor Green
+        
+        }
+        else{
+            Write-Host "ERROR - you should delete manualy the nic $nicname" -ForegroundColor Red
+            
+        }
+        Write-Host "Exit code after ERROR creating the VM $vmname" -ForegroundColor Red
+        $date = Get-Date
+        Write-Host "Finish date: $date"
+        exit
+    }
+
+    if ( $pipvalidation -eq "yes"){
+    
+        #create new public ip address (If it's required public IP - optional)
+        Write-Host "3- creating Public IP . . . ."
+        az network public-ip create --resource-group $resourceGroupName --name $pipname --dns-name $vmname --allocation-method $piptype
+
+        if ( $? -eq 'True'){
+            Write-Host "Public ip address $pipname created" -ForegroundColor Green
+            
+            #add public ip to nic (If it's required public IP - optional)
+            Write-Host "4- Adding public ip to nic ipconfig . . . ."
+            az network nic ip-config update --resource-group $resourceGroupName --nic-name $nicname --name $ipconfigname --public-ip-address $pipname
+
+            if ( $? -eq 'True'){
+                Write-Host "Public ip address $pipname added to nic $nicname of the machine $vmname" -ForegroundColor Green
+           
+            }
+            else{
+                Write-Host "ERROR !!!" -ForegroundColor Red
+                Write-Host "Error updating the nic ip-config to add the Public ip address $pipname" -ForegroundColor Red
+                Write-Host "Check what happened on the Azure Portal - https://portal.azure.com " -ForegroundColor Red
+                $date = Get-Date
+                Write-Host "Finish date: $date"
+            }
+            
+        }
+        else{
+            Write-Host "ERROR !!!" -ForegroundColor Red
+            Write-Host "Error creating the Public ip address $pipname" -ForegroundColor Red
+            Write-Host "Check what happened on the Azure Portal - https://portal.azure.com " -ForegroundColor Red
+            $date = Get-Date
+            Write-Host "Finish date: $date"
+        }
+
+        
+
+        Write-Host " "
+        Write-Host "Process finished - Created nic: $nicname | VM: $vmname | Public IP: $pipname" -ForegroundColor Green
+        
+        if ( $pipvalidation -eq "yes"){
+            Write-Host "!!!Check for ERRORS on the Public ip address $pipname creation!!!!" -ForegroundColor Yellow
+        }
+        
+        $date = Get-Date
+        Write-Host "Finish date: $date"
+    }
+    else{
+        Write-Host " "
+        Write-Host "Process finished - Created nic: $nicname | VM: $vmname" -ForegroundColor Green
+        #echo "Process finished - Created nic: $nicname | VM: $vmname"
+        $date = Get-Date
+        Write-Host "Finish date: $date"
+    }
+}
+else{
+    Write-Host "########################################################" -ForegroundColor Red
+    Write-Host "#                                                      #" -ForegroundColor Red
+    Write-Host "# !!!!You should perform first the login on Azure!!!!  #" -ForegroundColor Red
+    Write-Host "#                                                      #" -ForegroundColor Red
+    Write-Host "# ex. az login -u admin@celfocusoneit.onmicrosoft.com  #" -ForegroundColor Red
+    Write-Host "#                                                      #" -ForegroundColor Red
+    Write-Host "########################################################" -ForegroundColor Red
+}
+##END##

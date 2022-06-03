@@ -1,0 +1,9 @@
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:dgit="http://www.dgita.min-financas.pt/">
+   <soap:Header/>
+   <soap:Body>
+      <dgit:GetAccountPassword>
+         <!--Optional:-->
+         <dgit:strUserAccount>NIGCsgrciofife</dgit:strUserAccount>
+      </dgit:GetAccountPassword>
+   </soap:Body>
+</soap:Envelope>

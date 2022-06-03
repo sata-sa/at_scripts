@@ -1,0 +1,74 @@
+#bash
+#!/bin/sh
+#\\set -x
+#@Bruno Sousa
+
+
+#Inicio
+getenvir()
+{
+echo "_________Environment______________"
+echo " Environment PRD [1]"
+echo "             QUA [2]"
+echo "             DEV [3]"
+read -p " Answer: " ENVIRONMENT
+echo "___________________________________"
+
+case $ENVIRONMENT in
+
+1)
+
+#Lista de Produção
+FILENAME="/home/weblogic/Host_scripts/Info/listaprd.lst"
+
+echo
+echo "____________________________________Produção______________________________________" 
+printinfo;
+;;
+
+2)
+
+#Lista de Qualidade
+FILENAME="/home/weblogic/Host_scripts/Info/listaqua.lst"
+
+echo
+echo "____________________________________Qualidade_____________________________________" 
+printinfo;
+;;
+
+3)
+
+#Lista de Desenvolvimento
+FILENAME="/home/weblogic/Host_scripts/Info/listadev.lst"
+
+echo
+echo "____________________________________Desenvolvimento________________________________" 
+printinfo;
+;;
+
+
+
+*)
+   echo "One, Two or Three, just that..."
+   #return 1
+   getenvir;
+esac
+}
+
+
+printinfo()
+{
+
+while read LINE
+do
+echo ____________________--------------------$LINE--------------------____________________
+echo __________________________________________________________________________________
+ssh -T -n  $LINE 'uptime && free -m && df -h | grep Filesystem && df -h | grep -w / && df -h | grep -w /weblogic && df -h | grep /var' 
+echo __________________________________________________________________________________
+
+
+done < $FILENAME; 
+
+}
+
+getenvir;

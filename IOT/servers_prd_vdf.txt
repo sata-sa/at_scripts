@@ -1,0 +1,25 @@
+#APP
+#$loc_java -cp .:$CLASSPATH:$loc_weblogic weblogic.WLST $loc_restart t3://$app_admin $app_username $app_pass $app1_target stop       #Stop APP01 Server
+#$loc_java -cp .:$CLASSPATH:$loc_weblogic weblogic.WLST $loc_restart t3://$app_admin $app_username $app_pass $app2_target stop       #Stop APP02 Server
+#$loc_java -cp .:$CLASSPATH:$loc_weblogic weblogic.WLST $loc_restart t3://$app_admin $app_username $app_pass $app3_target stop       #Stop APP03 Server
+#$loc_java -cp .:$CLASSPATH:$loc_weblogic weblogic.WLST $loc_restart t3://$app_admin $app_username $app_pass $app4_target stop       #Stop APP04 Server
+
+
+#AUTH
+#$loc_java -cp .:$CLASSPATH:$loc_weblogic weblogic.WLST $loc_restart t3://$aut_admin $aut_username $aut_pass $portlet1_target stop   #Stop Portlet AUTH01
+#$loc_java -cp .:$CLASSPATH:$loc_weblogic weblogic.WLST $loc_restart t3://$aut_admin $aut_username $aut_pass $portlet2_target stop   #Stop Portlet AUTH02
+
+#$loc_java -cp .:$CLASSPATH:$loc_weblogic weblogic.WLST $loc_restart t3://$aut_admin $aut_username $aut_pass $portal1_target stop    #Stop Portal AUTH01
+#$loc_java -cp .:$CLASSPATH:$loc_weblogic weblogic.WLST $loc_restart t3://$aut_admin $aut_username $aut_pass $portal2_target stop    #Stop Portal AUTH02
+
+
+#CUS
+#$loc_java -cp .:$CLASSPATH:$loc_weblogic weblogic.WLST $loc_restart t3://$cus_admin $cus_username $cus_pass $portlet1_target stop   #Stop Portlet CUS01
+#$loc_java -cp .:$CLASSPATH:$loc_weblogic weblogic.WLST $loc_restart t3://$cus_admin $cus_username $cus_pass $portlet2_target stop   #Stop Portlet CUS02
+#$loc_java -cp .:$CLASSPATH:$loc_weblogic weblogic.WLST $loc_restart t3://$cus_admin $cus_username $cus_pass $portlet3_target stop   #Stop Portlet CUS03
+#$loc_java -cp .:$CLASSPATH:$loc_weblogic weblogic.WLST $loc_restart t3://$cus_admin $cus_username $cus_pass $portlet4_target stop   #Stop Portlet CUS04
+
+#$loc_java -cp .:$CLASSPATH:$loc_weblogic weblogic.WLST $loc_restart t3://$cus_admin $cus_username $cus_pass $portal1_target stop    #Stop Portal CUS01
+#$loc_java -cp .:$CLASSPATH:$loc_weblogic weblogic.WLST $loc_restart t3://$cus_admin $cus_username $cus_pass $portal2_target stop    #Stop Portal CUS02
+#$loc_java -cp .:$CLASSPATH:$loc_weblogic weblogic.WLST $loc_restart t3://$cus_admin $cus_username $cus_pass $portal3_target stop    #Stop Portal CUS03
+#$loc_java -cp .:$CLASSPATH:$loc_weblogic weblogic.WLST $loc_restart t3://$cus_admin $cus_username $cus_pass $portal4_target stop    #Stop Portal CUS04

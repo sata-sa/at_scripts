@@ -1,0 +1,17 @@
+﻿## Emanuel Almeida - 2017.07.26
+## Criar maquinas com availability-set
+
+
+criar availability sets via portal:
+
+Name: m2m-vodafone
+Subscription:	Enterprise
+Use Existing:	SG_IoT_Global-RG
+Location:		West Europe
+
+
+
+Criar maquina com availability-set definido via cli:
+Nota: tem de ser associado logo na criação senão a maquina tem de ser refeita, isto é, remove-la e adicinar novamente com a opção.
+
+az vm create --resource-group SG_IoT_Global-RG --name m2miitcosbuat --admin-username celfocus --admin-password M2Miitc2015! --nics m2miitcosbuat-PrimaryNic --size Standard_A4m_v2 --os-type Linux --availability-set m2m-vodafone --use-unmanaged-disk --attach-os-disk https://portalvhdsfkwgvp6y6bggd.blob.core.windows.net/vhds/m2miitcosbuat-os.vhd

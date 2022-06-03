@@ -1,0 +1,47 @@
+
+
+- Imagens e baselines
+	- Garantir configurações transversais
+	- Garantir Politicas da organização e compliance (SCA);
+	- Ambientes transversais, homogenios e similares;
+	
+- AV
+	- Monotorização e resolução de incidentes de AV;
+	- Suporte de AV;
+
+- I&D
+	- Automações;
+		- Criação e analise de reports de diversas metricas dos sistemas.
+		- Desenvolvimento de automações de correção de regras de configuração.
+	- Estudo de novas ferramentas de monotorização e resolução de falhas de configuração;
+	- Analise continua de vulnerabilidades de containers e novos serviços (threatmapper);
+	
+Tools
+	- Monitorização de eventos de LOGIN (inclui geolocalizacao em eventos de cloud), vulnerabilidades, WAF.
+	- Analise de LOGS;
+	- Controlo de actividades suspeitas nas diversas plataformas de cloud;
+	- Propostas de upgrade de ferramentas e software existente.
+	
+Reporting
+	- Report de eventos não usuais;
+	- Participação nas auditorias de segurança e resolução de pontos em não conformidade;
+
+Consultoria e aconselhamento de boas praticas de regras de segurança nos projectos;
+
+Criação/divulgação/participação em workshops de segurança;
+
+Mitigação e redução de riscos nas superficies de ataque (whitelisting/blacklisting de origens/destinos);
+
+Estudo de proteções/controlos de novos serviços disponibilizados pelos cloud providers;
+
+
+
+KPIS'segurança
+	- Virus/intrusoes detetados/corrigidos;
+	- Sistemas atualizados com o AV;
+	- Logins;
+	- Vulnerabilidades;
+	- Não conformidades (SCA);
+	- Pontos de auditorias;
+	- Incidentes de segurança;
+	- Sistemas EOL;

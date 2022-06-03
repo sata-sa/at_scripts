@@ -1,0 +1,121 @@
+1 Consola
+
+https://susatellite101.ritta.local/
+Password > GPGS > Outras
+
+[editar] 2 Restart serviços na máquina susatellite101
+
+katello-service restart
+
+[editar] 3 Registar host ao Satellite na Activation Key "AT"
+
+Default key | DEV KEY
+subscription-manager register --org "AT" --activationkey "AT"
+subscription-manager clean ;
+rpm -Uvh http://susatellite101.ritta.local/pub/katello-ca-consumer-latest.noarch.rpm ;
+
+RHEL5 x64
+subscription-manager register --org="AT" --activationkey="RHEL5"
+yum install katello-agent -y 
+
+RHEL6 x64
+subscription-manager repos --enable=rhel-6-server-satellite-tools-6.2-rpms ;
+#PROD KEY
+subscription-manager register --org="AT" --activationkey="LINUX_PRD_RHEL6"
+#QUA KEY
+subscription-manager register --org="AT" --activationkey="LINUX_QUA_RHEL6"
+yum install katello-agent -y 
+
+RHEL6 - Z/LINUX - x64
+#SANDBOX KEY
+subscription-manager register --org="AT" --activationkey="ZLINUX_SANDBOX"
+#PROD KEY
+subscription-manager register --org="AT" --activationkey="ZLINUX_PRD_RHEL6 "
+yum install katello-agent -y
+
+RHEL7 x64
+ #QUA KEY
+subscription-manager register --org="AT" --activationkey="LINUX_QUA_RHEL7"
+ #PROD KEY
+subscription-manager register --org="AT" --activationkey="LINUX_PRD_RHEL7"
+yum install katello-agent -y
+
+[editar] 4 Instalar agent do Satellite na máquina
+
+yum install katello-agent
+
+[editar] 5 Selecionar o lifecycle
+
+Selecionar Hosts > Content Host (Selecionar Host) > "Content Host Content" > Mudar o environment (Exemplo Linux_DEV)
+
+[editar] 6 Restart Agent e force contacting Satellite
+
+  /etc/init.d/goferd restart ou systemctl restart goferd
+  katello-package-upload
+
+
+
+
+
+
+
+
+
+
+
+  966  28/Jun/17 - 18:11:26 subscription-manager register --org "AT" --activationkey "AT"
+  967  28/Jun/17 - 18:13:02 ping susatellite101
+  968  28/Jun/17 - 18:13:06 ping susatellite101.ritta.local
+  969  28/Jun/17 - 18:13:24 subscription-manager clean ;
+  970  28/Jun/17 - 18:13:29 subscription-manager register --org "AT" --activationkey "AT"
+  971  28/Jun/17 - 18:14:21 rpm -Uvh http://susatellite101.ritta.local/pub/katello-ca-consumer-latest.noarch.rpm
+  972  28/Jun/17 - 18:14:57 subscription-manager list
+  973  28/Jun/17 - 18:15:08 subscription-manager clean ;
+  974  28/Jun/17 - 18:15:12 subscription-manager register --org "AT" --activationkey "AT"
+  975  28/Jun/17 - 18:15:32 subscription-manager register --org="AT" --activationkey="LINUX_PRD_RHEL6"
+  976  28/Jun/17 - 18:15:54 yum install katello-agent -y
+  977  28/Jun/17 - 18:16:41 subscription-manager register --org="AT" --activationkey="LINUX_PRD_RHEL6" --force
+  978  28/Jun/17 - 18:16:59 rpm -Uvh http://susatellite101.ritta.local/pub/katello-ca-consumer-latest.noarch.rpm
+  979  28/Jun/17 - 18:17:10 yum install katello-agent
+  980  28/Jun/17 - 18:18:45 rpm -Uvh http://susatellite101.ritta.local/pub/katello-ca-consumer-latest.noarch.rpm
+  981  28/Jun/17 - 18:18:56 yum install katello-agent -y
+  982  28/Jun/17 - 18:19:10 yum search katello
+  983  28/Jun/17 - 18:19:33 yum repo list
+  984  28/Jun/17 - 18:19:44 yum repolist
+  985  28/Jun/17 - 18:19:49 yum search katello
+  986  28/Jun/17 - 18:20:03 cd /etc/yum.repos.d/
+  987  28/Jun/17 - 18:20:04 ls
+  988  28/Jun/17 - 18:20:20 more /etc/*release
+  989  28/Jun/17 - 18:20:30 cat /etc/*release
+  990  28/Jun/17 - 18:20:40 uname -a
+  991  28/Jun/17 - 18:21:57 subscription-manager repos --enable=rhel-6-server-satellite-tools-6.2-rpms
+  992  28/Jun/17 - 18:22:08 yum install katello-agent
+  993  28/Jun/17 - 18:24:15 /etc/init.d/goferd restart
+  994  28/Jun/17 - 18:24:23 katello-package-upload
+  995  28/Jun/17 - 18:25:02 hostname
+  996  28/Jun/17 - 18:52:20 /etc/init.d/goferd restart
+  997  28/Jun/17 - 18:52:29 katello-package-upload
+  998  28/Jun/17 - 18:55:28 cat /etc/*release
+  999  28/Jun/17 - 18:57:41 vi /etc/hosts
+ 1000  28/Jun/17 - 19:10:32 history
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

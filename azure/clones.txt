@@ -1,0 +1,73 @@
+
+
+
+
+=====================================================================================================================================================
+Clones efectuados a 20/04/2018
+- m2miitcpcrmesit - 10.254.3.42 -> m2mpcrmesit4 - 10.254.3.92 - Standard_A2m_v2
+- m2msmebd - 10.254.3.5 -> m2bdsit4 - 10.254.3.93 - Standard_A2m_v2
+- m2mportalsit03 - 10.254.3.13 -> m2mportalsit4 - 10.254.3.94 - Standard_A2m_v2
+- m2msmeompsit - 10.254.3.26 -> m2mompsit4 - 10.254.3.95 - Standard_A2m_v2
+- m2msmebpelsit - 10.254.3.25 -> m2mbpelsit4 - 10.254.3.96 - Standard_A2m_v2
+- m2msmeosbsit - 10.254.3.24 -> m2mosbsit4 - 10.254.3.97 - Standard_A2m_v2
+=====================================================================================================================================================
+
+### PLACAS DE REDE ###
+m2mpcrmesit4 - 10.254.3.92
+az network nic create -g SG_IoT_Global-RG --vnet-name Cloud-Novabase-Network --subnet N10-254-3_Subnet-1 --name m2mpcrmesit4-PrimaryNic --private-ip-address 10.254.3.92 --network-security-group Safe_Access_From_Internet
+m2bdsit4 - 10.254.3.93
+az network nic create -g SG_IoT_Global-RG --vnet-name Cloud-Novabase-Network --subnet N10-254-3_Subnet-1 --name m2bdsit4-PrimaryNic --private-ip-address 10.254.3.93 --network-security-group Safe_Access_From_Internet
+m2mportalsit4 - 10.254.3.94
+az network nic create -g SG_IoT_Global-RG --vnet-name Cloud-Novabase-Network --subnet N10-254-3_Subnet-1 --name m2mportalsit4-PrimaryNic --private-ip-address 10.254.3.94 --network-security-group Safe_Access_From_Internet
+m2mompsit4 - 10.254.3.95
+az network nic create -g SG_IoT_Global-RG --vnet-name Cloud-Novabase-Network --subnet N10-254-3_Subnet-1 --name m2mompsit4-PrimaryNic --private-ip-address 10.254.3.95 --network-security-group Safe_Access_From_Internet
+m2mbpelsit4 - 10.254.3.96
+az network nic create -g SG_IoT_Global-RG --vnet-name Cloud-Novabase-Network --subnet N10-254-3_Subnet-1 --name m2mbpelsit4-PrimaryNic --private-ip-address 10.254.3.96 --network-security-group Safe_Access_From_Internet
+m2mosbsit4 - 10.254.3.97
+az network nic create -g SG_IoT_Global-RG --vnet-name Cloud-Novabase-Network --subnet N10-254-3_Subnet-1 --name m2mosbsit4-PrimaryNic --private-ip-address 10.254.3.97 --network-security-group Safe_Access_From_Internet
+
+
+### DISCOS ### 
+- m2miitcpcrmesit -> m2mpcrmesit4
+az storage blob copy start --source-uri https://portalvhdsfkwgvp6y6bggd.blob.core.windows.net/vhds/rveqluxq.40p201611211048010353.vhd --destination-container vhds --account-name portalvhdsfkwgvp6y6bggd --destination-blob m2mpcrmesit4-os.vhd
+- m2msmebd -> m2bdsit4
+az storage blob copy start --source-uri https://m2msmebd.blob.core.windows.net/vhds/a1uxb2e3.wpr201610251855490336.vhd --destination-container vhds --account-name m2msmebd --destination-blob m2bdsit4-os.vhd
+az storage blob copy start --source-uri https://m2msmebd.blob.core.windows.net/vhds/m2msmebd-20161011-182145.vhd --destination-container vhds --account-name m2msmebd --destination-blob m2bdsit4-d0.vhd
+az storage blob copy start --source-uri https://m2msmebd.blob.core.windows.net/vhds/m2msmebd-20161011-182312.vhd --destination-container vhds --account-name m2msmebd --destination-blob m2bdsit4-d1.vhd
+az storage blob copy start --source-uri https://m2msmebd.blob.core.windows.net/vhds/m2msmebd-20161011-182424.vhd --destination-container vhds --account-name m2msmebd --destination-blob m2bdsit4-d2.vhd
+- m2mportalsit03 -> m2mportalsit4
+az storage blob copy start --source-uri https://m2menvsit02.blob.core.windows.net/vhds/m2mportalsit03-os.vhd --destination-container vhds --account-name m2menvsit02 --destination-blob m2mportalsit4-os.vhd
+- m2msmeompsit -> m2mompsit4
+az storage blob copy start --source-uri https://portalvhdsfkwgvp6y6bggd.blob.core.windows.net/vhds/do1rfxb0.2g0201610251453030534.vhd --destination-container vhds --account-name portalvhdsfkwgvp6y6bggd --destination-blob m2mompsit4-os.vhd
+- m2msmebpelsit -> m2mbpelsit4
+az storage blob copy start --source-uri https://portalvhdsfkwgvp6y6bggd.blob.core.windows.net/vhds/ms0h4ll0.ug4201610251449470605.vhd --destination-container vhds --account-name portalvhdsfkwgvp6y6bggd --destination-blob m2mbpelsit4-os.vhd
+az storage blob copy start --source-uri https://portalvhdsfkwgvp6y6bggd.blob.core.windows.net/vhds/cpypz1b1.d3k201610251449490888.vhd --destination-container vhds --account-name portalvhdsfkwgvp6y6bggd --destination-blob m2mbpelsit4-d0.vhd
+- m2msmeosbsit -> m2mosbsit4
+az storage blob copy start --source-uri https://portalvhdsfkwgvp6y6bggd.blob.core.windows.net/vhds/m2msmeosbsit-os.vhd --destination-container vhds --account-name portalvhdsfkwgvp6y6bggd --destination-blob m2mosbsit4-os.vhd
+az storage blob copy start --source-uri https://portalvhdsfkwgvp6y6bggd.blob.core.windows.net/vhds/m2msmeosbsit-0.vhd --destination-container vhds --account-name portalvhdsfkwgvp6y6bggd --destination-blob m2mosbsit4-d0.vhd
+
+
+### VM's ###
+
+
+m2mpcrmesit4 - 10.254.3.92
+az vm create --resource-group SG_IoT_Global-RG --name m2mpcrmesit4 --nics m2mpcrmesit4-PrimaryNic --size Standard_A2m_v2 --os-type Linux --use-unmanaged-disk --attach-os-disk https://portalvhdsfkwgvp6y6bggd.blob.core.windows.net/vhds/m2mpcrmesit4-os.vhd
+
+m2bdsit4 - 10.254.3.93
+az vm create --resource-group SG_IoT_Global-RG --name m2bdsit4 --nics m2bdsit4-PrimaryNic --size Standard_A2m_v2 --os-type Linux --use-unmanaged-disk --attach-os-disk https://m2msmebd.blob.core.windows.net/vhds/m2bdsit4-os.vhd --attach-data-disk https://m2msmebd.blob.core.windows.net/vhds/m2bdsit4-d0.vhd --attach-data-disk https://m2msmebd.blob.core.windows.net/vhds/m2bdsit4-d1.vhd  --attach-data-disk https://m2msmebd.blob.core.windows.net/vhds/m2bdsit4-d2.vhd
+
+m2mportalsit4 - 10.254.3.94
+az vm create --resource-group SG_IoT_Global-RG --name m2mportalsit4 --nics m2mportalsit4-PrimaryNic --size Standard_A2m_v2 --os-type Linux --use-unmanaged-disk --attach-os-disk https://m2menvsit02.blob.core.windows.net/vhds/m2mportalsit4-os.vhd
+
+m2mompsit4 - 10.254.3.95
+az vm create --resource-group SG_IoT_Global-RG --name m2mompsit4 --nics m2mompsit4-PrimaryNic --size Standard_A2m_v2 --os-type Linux --use-unmanaged-disk --attach-os-disk https://portalvhdsfkwgvp6y6bggd.blob.core.windows.net/vhds/m2mompsit4-os.vhd
+
+m2mbpelsit4 - 10.254.3.96
+az vm create --resource-group SG_IoT_Global-RG --name m2mbpelsit4 --nics m2mbpelsit4-PrimaryNic --size Standard_A2m_v2 --os-type Linux --use-unmanaged-disk --attach-os-disk https://portalvhdsfkwgvp6y6bggd.blob.core.windows.net/vhds/m2mbpelsit4-os.vhd --attach-data-disk https://portalvhdsfkwgvp6y6bggd.blob.core.windows.net/vhds/m2mbpelsit4-d0.vhd
+
+m2mosbsit4 - 10.254.3.97
+az vm create --resource-group SG_IoT_Global-RG --name m2mosbsit4 --nics m2mosbsit4-PrimaryNic --size Standard_A2m_v2 --os-type Linux --use-unmanaged-disk --attach-os-disk https://portalvhdsfkwgvp6y6bggd.blob.core.windows.net/vhds/m2mosbsit4-os.vhd --attach-data-disk https://portalvhdsfkwgvp6y6bggd.blob.core.windows.net/vhds/m2mosbsit4-d0.vhd
+
+
+
+

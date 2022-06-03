@@ -1,0 +1,29 @@
+batch-common-env.sh
+batch-describe.sh
+batch_deploy.sh
+batch_add.sh
+batch_del.sh
+create_properties_endpoints.pl - dor de cabeça
+set-batch-info.pl -------------- terminado (inserção de valores na BD)
+get-batch-info.pl -------------- terminado (consulta de valores na BD)
+
+
+
+
+
+Em todos os .sh o seguinte a iniciar
+
+
+#!/bin/sh
+#set -x
+
+. ${HOME}/bin/batch/batch-common-env.sh
+
+TRANSACTION = "TESTE $1"
+ENV
+AREA
+
+
+
+
+./get-batch-info.pl dev -i |awk '{print $2}'

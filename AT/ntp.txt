@@ -1,0 +1,76 @@
+
+
+
+
+=====================================================================================================================================================
+
+# Editar o /etc/hosts e colocar o host clock
+
+10.191.10.193 clock.ritta.local clock
+
+# Editar o ficheiro /etc/ntp.conf e inserir as seguintes linhas
+
+server clock    # local clock
+fudge   clock  stratum 10
+broadcastdelay  0.008
+authenticate no
+
+# (normalmente susbtitui-se o default IP pelo host clock no server e no fudge e faz-se o coment do #driftfile /etc/ntp/drift)
+
+# Fazer um sync com NTPD server para acertar o relogio
+
+ntpdate clock
+
+# Em seguida arrancar o serviço com:
+
+RHEV6 # service ntpd start
+RHEV7 # systemctl start ntpd
+
+# Verificar se o serviço está activo e a funcionar com:
+
+ntpq -p
+     remote           refid      st t when poll reach   delay   offset  jitter
+==============================================================================
+*clock           213.13.154.236  14 u   26   64  377    0.330  411.954  15.473
+
+Nota: verificar se o ntpd está nos init scripts em /etc/rcX.d/K74ntpd para o init level pretendido. Em principio deve estar mas caso não esteja efectuar:
+
+# RHEV6 # chkconfig --level 2345 ntpd on
+# RHEV7 # systemctl enable ntpd
+
+
+=====================================================================================================================================================
+
+CHORNYD - RHEL 7
+
+Instalar:
+
+yum install chrony
+
+Editar o /etc/chrony.conf com o seguinte:
+
+#server 0.rhel.pool.ntp.org iburst
+#server 1.rhel.pool.ntp.org iburst
+#server 2.rhel.pool.ntp.org iburst
+#server 3.rhel.pool.ntp.org iburst 
+
+server clock.ritta.local iburst
+
+Arrancar o serviço:
+
+systemctl start chronyd
+
+Activar o serviço:
+
+systemctl enable chronyd
+
+Verificar o estado:
+
+chronyc tracking
+
+
+=====================================================================================================================================================
+
+Alterar timezone
+
+cp /usr/share/zoneinfo/Europe/London /etc/localtime

@@ -1,0 +1,8 @@
+Create VM from user image
+
+Azure applet:
+https://github.com/Azure/azure-quickstart-templates/tree/master/101-vm-from-user-image
+
+Other ways (powershell):
+http://stackoverflow.com/questions/42595486/i-cannot-click-capture-button-to-capture-virtual-machine-image
+http://www.codeisahighway.com/how-to-create-a-virtual-machine-from-a-custom-image-using-an-arm-template/

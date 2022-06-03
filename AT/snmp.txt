@@ -1,0 +1,34 @@
+SNMP Linux
+[editar] Configuração do SNMP Linux
+
+Como root:
+
+Instalação:
+
+yum install net-snmp
+
+
+Editar ficheiro /etc/snmp/snmpd.conf ou /etc/snmp/snmpd.conf com o seguinte
+
+comentar: #sec.name source community
+comentar: #com2sec notConfigUser default public
+adicionar maq NAGIOS: rocommunity monitoring 10.191.33.160
+adicionar maq CACTI : rocommunity monitoring 10.191.33.167
+
+Arranque:
+
+RHEV 6: service snmpd restart
+RHEV 7: systemctl restart snmpd
+
+Enable no arranque:
+
+RHEV 6: chkconfig snmpd on
+RHEV 7: systemctl enable snmpd
+
+
+Caso a comunicação falhe, verificar firewall. Pode ser necessario adicionar o porto ou desligar a firewall (consoante caso).
+
+RHEV 7: firewall-cmd --state
+RHEV 7: firewall-cmd --add-port=161/udp --permanent
+RHEV 7: firewall-cmd --reload
+

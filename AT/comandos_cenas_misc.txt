@@ -1,0 +1,284 @@
+
+
+
+
+-------------- aumentar discos ------------------------------------------------------------------------------------------------------------
+fdisk -l
+pvcreate /dev/vda5
+vgs
+vgextend vg_plinmstr /dev/vda5
+vgs
+lvs
+df -h
+fdisk -l
+pvs
+lslbk
+lvextend -L+30G /dev/mapper/vg_plinmstr-lv_weblogic
+resize2fs /dev/mapper/vg_plinmstr-lv_weblogic 
+
+
+-------------- criar lv -------------------------------------------------------------------------------------------------------------------
+cd /oracle/
+ls
+mkdir oggdata
+chown oracle:dba oggdata
+lvs
+lvcreate -L20G -n oggdata data_vg
+lvs
+vi /etc/fstab
+mkfs.ext4 /dev/mapper/data_vg-oggdata
+tune2fs -m 1 /dev/mapper/data_vg-oggdata
+mount -a
+df -h
+vgs
+lvs
+vgdisplay
+lvdisplay 
+
+
+-------------- matar todos os processos java ----------------------------------------------------------------------------------------------
+for i in `ps -ef | grep java | awk '{print $2}'`;do kill -9 $i;done
+
+
+-------------- descobrir pid que criou o ficheiro -----------------------------------------------------------------------------------------
+/sbin/fuser -m liftxsd4165326717191548273
+lsof "process"
+
+
+-------------- logrotate conf -------------------------------------------------------------------------------------------------------------
+[root@sucacti101 logrotate.d]# pwd
+/etc/logrotate.d
+
+[root@sucacti101 logrotate.d]# ls
+cacti  cups  dracut  httpd  mysqld  nagios  pnp4nagios  ppp  psacct  snmptt  sssd  subscription-manager  syslog  up2date  yum
+
+[root@sucacti101 logrotate.d]# cat cacti 
+/var/log/cacti/cacti.log {
+	missingok
+	monthly
+	notifempty
+	compress
+	create 0664 cacti apache
+}
+
++
+
+[root@sucacti101 /]vi /etc/logrotate.conf
+
+
+-------------- limpar wars e ears antigos -------------------------------------------------------------------------------------------------
+find /weblogic/*/servers/*/stage/* -name *war* && find /weblogic/*/servers/*/stage/* -name *ear*
+
+
+-------------- aumentar disco suzoras -----------------------------------------------------------------------------------------------------
+lvextend -L +xxG /dev/data_vg/oradata1 (xx=valor se pretende adicionar)
+resize2fs /dev/data_vg/oradata1
+
+
+-------------- reboot agentes oem ---------------------------------------------------------------------------------------------------------
+# ssh <máquina> /opt/stage/agent/agentstatus.sh
+# ssh <máquina> /opt/stage/agent/agentstop.sh
+# ssh <máquina> /opt/stage/agent/agentstart.sh
+
+
+-------------- descobrir os portos abertos de uma determinada maquina ---------------------------------------------------------------------
+sudo nmap -O 10.191.34.133
+
+
+-------------- grep por processo para descobrir porto associado ---------------------------------------------------------------------------
+netstat -tulpn | grep 22167
+
+
+-------------- sed a new line into file ---------------------------------------------------------------------------------------------------
+sed -i '$ a texto_a_inserir' ficheiro
+
+
+-------------- FIND infinito em bg --------------------------------------------------------------------------------------------------------
+find / > /dev/null 2>&1
+
+
+-------------- Arranque automatico nas maquinas SUZORAS -----------------------------------------------------------------------------------
+vi /etc/init.d/dbstart
+# /etc/oraENVVarxxx.sh
+chkconfig dbstart on 235
+
+
+-------------- Aumentar filesystem Z/Linux ------------------------------------------------------------------------------------------------
+vgs
+lvextend -L +2G /dev/mapper/system_vg-var_lv
+resize2fs /dev/mapper/system_vg-var_lv
+
+
+-------------- Novos users maquinas -------------------------------------------------------------------------------------------------------
+userdel -rf anunes && /usr/sbin/useradd -m anunes -u 3010 -g dba  && echo anunes.2016 | passwd --stdin anunes
+
+
+-------------- WEB SULDEPLOY101 -----------------------------------------------------------------------------------------------------------
+/opt/scripts/public_html
+
+
+-------------- Forçar hora da maquina no hardware -----------------------------------------------------------------------------------------
+ntpdate clock // ntpdate 10.191.10.192 // ntpdate 10.191.10.193
+hwclock --systohc
+
+
+-------------- Ver processos agarrados a ficheiros deleted --------------------------------------------------------------------------------
+lsof +L1
+
+
+-------------- Acrescentar /usr/sbin na maquina remota ------------------------------------------------------------------------------------
+ssh weblogic@suljvmaut105 "cat .bash_profile |grep -i path= && sed -i '/PATH=/ s/$/:\/usr\/sbin/' ~/.bash_profile && cat .bash_profile |grep -i path="
+
+
+-------------- MISC -----------------------------------------------------------------------------------------------------------------------
+wall - Envia info para todos os users com login
+
+
+-------------- Acrescentar chaves da maquina onde se executa na outra ---------------------------------------------------------------------
+ssh-copy-id -i ~weblogic/.ssh/id_dsa.pub suapps211         ----------> weblogic enters weblogic
+ssh-copy-id -i ~nagios/.ssh/id_dsa.pub admin@sukvm104      ----------> nagios enters admin
+
+
+-------------- Comando permissões batches--------------------------------------------------------------------------------------------------
+find . -type d -exec chmod 750 {} \; && find . -type f -name *.properties -exec chmod 600 {} \; &&find . -type f -name *.sh -exec chmod 740 {} \;
+
+
+-------------- Comando RSYNC SOLARIS -> LINUX ---------------------------------------------------------------------------------------------
+rsync -var --rsync-path=rsync . weblogic@suvjvmgold103:/uploadsonas/ratransito/nstiweb/msgs/carregamentos/Total
+
+
+-------------- Comando contador portas APACHE ---------------------------------------------------------------------------------------------
+netstat -atun | awk '{print $5}' | cut -d: -f2 | sort | uniq -c | sort -n | tail
+
+
+-------------- Cenas - Bruno --------------------------------------------------------------------------------------------------------------
+:(){ :|:& };: - basicamente, bloqueia o pc
+
+
+-------------- Alterar password Users WIKI ------------------------------------------------------------------------------------------------
+php /opt/httpd-2.4.1-01/htdocs/mediawiki/maintenance/changePassword.php --user=Teste --password=teste123
+
+
+-------------- Saber se o no foi desligado por um utilizador ------------------------------------------------------------------------------
+grep "Server shutdown has been requested by weblogic" server.log
+
+
+-------------- Restart Apaches ------------------------------------------------------------------------------------------------------------
+service wlhttpd stop
+service wlhttpd start
+
+
+-------------- Zipagem de Logs ------------------------------------------------------------------------------------------------------------
+find . -type f -name "*.log" -mtime +0 -exec gzip {} \;        -------> Para ficheiros com mais de 24 horas
+find . -type f -name "*.log" -mtime +1 -exec gzip {} \;        -------> Para ficheiros com mais de 48 horas (pelo sim pelo não)
+
+
+-------------- Find xls e delete dos mesmos -----------------------------------------------------------------------------------------------
+find /weblogic/ -type f -name "*.xls" -exec rm -rf "{}" \;
+
+
+-------------- IP da maquina --------------------------------------------------------------------------------------------------------------
+hostname -i
+
+
+-------------- Encontrar Servidores em DEBUG ----------------------------------------------------------------------------------------------
+find . -type f -name "config.xml" | xargs grep "debug" | awk '{print $11}'
+
+
+-------------- Check Processos nas maquinas -----------------------------------------------------------------------------------------------
+﻿/softs/apps/   |   /wldomains    |   /softs/wli   |   /softs/batch    |    /softs/app/weblogic    |  /weblogic
+find / -name AdminServer.log <|> cat <directoria> | grep -i WebLogic\ Server
+du -sh *
+lsof pasta
+
+
+-------------- Alterar esquema de cores VI ------------------------------------------------------------------------------------------------
+set background=light #letras mais escuras
+set background=dark #letras mais claras
+~/.vimrc
+~/.bashrc
+
+
+-------------- Encontrar pastas de logs que não são "links" -------------------------------------------------------------------------------
+find . ! -type l -name "logs"
+
+
+-------------- Find wars ------------------------------------------------------------------------------------------------------------------
+find . -type f -name "*war" -exec ls -larth "{}" \; 2>/dev/null
+
+
+-------------- Tamanho pastas -------------------------------------------------------------------------------------------------------------
+du -hs *
+
+
+-------------- Alteração Root por ssh -----------------------------------------------------------------------------------------------------
+passwd root
+/etc/ssh/sshd_config
+PermitRootLogin YES -> PermitRootLogin no
+service sshd reload
+
+
+-------------- Symantec NetBackup ---------------------------------------------------------------------------------------------------------
+sudo /usr/openv/java/jnbSA
+
+
+-------------- Executar em Anonimo --------------------------------------------------------------------------------------------------------
+HISTFILE= ; comando
+echo $$       &&        kill -9 sessao
+
+
+-------------- PROXY ----------------------------------------------------------------------------------------------------------------------
+http / https / ftp
+10.191.10.73:3128
+user:arodrigues
+pass:*********
+
+
+Netmask - 255.255.240.0
+Gateway - 10.199.47.254
+DNS1 - 10.191.191.191
+DNS2 - 10.127.127.127
+
+
+-------------- ALTERAR IMPRESSORAS --------------------------------------------------------------------------------------------------------
+Maquina: SUORA103
+
+entrar em root e bash
+
+ficheiro : vi /etc/hosts -> /etc/inet/hosts
+procurar, subs
+
+lpstat -o all | grep "nome_impressora"
+cancel "first job"
+
+
+-------------- SNMP -----------------------------------------------------------------------------------------------------------------------
+yum install net-snmp
+
+# Editar ficheiro /etc/snmp/snmpd.conf com o seguinte
+vi /etc/snmpd/snmpd.conf
+vi /etc/snmp/snmpd.conf
+----> # sec.name source community
+----> #com2sec notConfigUser default public
+----> rocommunity monitoring 10.0.0.0/8
+
+# executar o seguinte comando para arrancar
+RHEV 6: service snmpd restart
+RHEV 7: systemctl restart snmpd
+
+# executar o seguinte comando para adicionar ao arranque automatico
+RHEV 6: chkconfig snmpd on
+RHEV 7: systemctl enable snmpd
+
+# desligar a firewall se ligada, ou adicionar a porta (161) e remover do arranque 
+RHEV 7: firewall-cmd --state
+RHEV 7: firewall-cmd --add-port=161/udp --permanent
+RHEV 7: firewall-cmd --reload
+
+
+-------------- HITACHI --------------------------------------------------------------------------------------------------------------------
+http://suhdm101.ritta.local:22015/DeviceManagerWebService/index.jsp
+
+
+
+

@@ -1,0 +1,23 @@
+
+DATE=$(date +"%Y%m%d%H%M")
+cp $deploy_log ./log/deploy_$DATE.log
+
+
+
+
+if [ $? != 0  ]; then
+        echo "1" > /tmp/output_var
+        out_failure "STOP of APP failed, check log."
+else
+        out_info "STOP of APP done."
+fi
+
+
+
+
+source /var/SP/nfs/common/deployments/DeploymentScripts/DeployComponents/variables_STG.sh
+
+> $check_file
+> $output_log
+echo "0" > $check_file
+echo " " > $output_log

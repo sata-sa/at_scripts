@@ -1,0 +1,66 @@
+
+
+### SCRIPTING NAGIOS ###
+
+=====================================================================================================================================================
+
+DIRS:
+	LEGACY MODE
+	- /home/msnagios/legacy_checks
+
+	NORMAL MODE (min2min)
+	/home/msnagios/local
+
+
+=====================================================================================================================================================
+
+EX LEGACY
+
+#!/bin/bash
+
+if [ TRUE ] then
+ echo OK - ALL OK
+ status=0
+fi
+
+if [ MAYBE ] then
+ echo WARNING - ALL COMME CI COMME CA
+ status=1
+fi
+
+if [ FALSE ] then
+ echo CRITICAL - ALL FUCKED UP
+ status=2
+fi
+
+if [ GONE ] then
+ echo UNKNOWN - ALL GONE
+ status=3
+fi
+
+exit $status
+
+
+=====================================================================================================================================================
+
+EX NORMAL MODE
+
+#!/bin/bash
+
+if [ TRUE ] then
+ echo 0 insert_check_name_here count=0 OK - ALL OK
+fi
+
+if [ MAYBE ] then
+ echo 1 insert_check_name_here count=1 WARNING - ALL COMME CI COMME CA
+ fi
+
+if [ FALSE ] then
+ echo 2 insert_check_name_here count=2 CRITICAL - ALL FUCKED UP
+ fi
+
+if [ GONE ] then
+ echo 3 insert_check_name_here count=3 UNKNOWN - ALL GONE
+ fi
+
+exit $status

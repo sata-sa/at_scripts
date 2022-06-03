@@ -1,0 +1,22 @@
+link: http://azure.microsoft.com/pt-pt/documentation/articles/virtual-machines-create-upload-vhd-windows-server/
+
+
+### para usar quando tenho que usar Proxy Server ####
+[System.Net.WebRequest]::DefaultWebProxy.Credentials = [System.Net.CredentialCache]::DefaultCredentials
+
+1.
+Criar storage e containers no azure:
+exemplo:
+storage: nbstorage01
+container: nbcontainer01
+
+2. sincronizar azure com conta de acesso
+a) Add-AzureAccount (isto lança um wizard é só fazer login)
+b) Get-AzurePublishSettingsFile (vai pedir para fazer download de um ficheiro, gravar)
+c) Import-AzurePublishSettingsFile "C:\Users\NB11269\Downloads\AzureCredentials.publishsettings"
+
+e pronto agora é importar o VHD:
+
+3.
+Add-AzureVhd -Destination "https://nbstorage01.blob.core.windows.net/nbcontainer01/K2Core.vhd" -LocalFilePath "C:\ToTransfer\K2 Core Original\K2 Core 6.1.1\K2 Core 6.1.1.vhd" -NumberOfUploaderThreads 5
+

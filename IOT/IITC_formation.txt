@@ -1,0 +1,8 @@
+
+
+#### Formacao IITC ####
+
+IITC e M2M comunicam no mesmo canal, no entanto 2 componentes diferentes. M2M com de carro servidor, IITC Internet para o cliente.
+
+B2C Business 2 Consumer
+B2B Business 2 Business

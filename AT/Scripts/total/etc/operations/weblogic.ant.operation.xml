@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="weblogic common operations" default="usage" basedir=".">
+  <!-- ################################################################# -->
+  <!-- # initializations                                               # -->
+  <!-- ################################################################# -->
+  <tstamp/>
+
+  <macrodef name="wlstcall">
+    <attribute name="options" default=""/>
+    <sequential>
+      <java classname="weblogic.WLST" failonerror="true">
+        <arg line="@{options}"/>
+        <permissions>
+          <!--
+          <revoke class="java.lang.RuntimePermission" name="exitVM" />
+          <grant class="org.apache.tools.ant.ExitException" name="exitVM" />
+          <grant class="java.lang.RuntimePermission" name="exitVM" />
+          -->
+          <grant class="java.lang.RuntimePermission" name="*" />
+          <grant class="java.lang.reflect.ReflectPermission" name="*" />
+          <grant class="java.util.PropertyPermission" name="*" actions="read,write" />
+          <grant class="java.io.FilePermission" name="&lt;&lt;ALL FILES&gt;&gt;" actions="read,write,delete,execute" />
+          <grant class="java.util.logging.LoggingPermission" name="control" />
+          <grant class="java.net.SocketPermission" name="*" actions="connect,resolve" />
+          <grant class="java.net.NetPermission" name="*" actions="getProxySelector" />
+        </permissions>
+      </java>
+      <info>WLST task terminated successfully.</info>
+    </sequential>
+  </macrodef>
+
+  <!-- ################################################################# -->
+  <!-- # interfacing with the user                                     # -->
+  <!-- ################################################################# -->
+  <target name="usage" description="Usage">
+    <echo message="It's necessary to invoke at least a target" />
+  </target>
+
+  <!-- ################################################################# -->
+  <!-- # weblogic operation targets                                    # -->
+  <!-- ################################################################# -->
+  <target name="wls_domain_initialize" description="Domain initialization" depends="">
+    <sequential>
+      <!-- wlst call: same as java weblogic.WLST <PYSCRIPT> -loadProperties <PROPS> -->
+      <wlst debug="false" executeScriptBeforeFile="true" failOnError="true" properties="${PY_PROPERTIES_FILE}" fileName="/home/weblogic/var/py/AdminServer.init.py">
+      </wlst>
+    </sequential>
+  </target>
+
+  <target name="wls_domain_logging" description="Configures Administration Server and Domain logging" depends="">
+    <sequential>
+      <!-- wlst call: same as java weblogic.WLST <PYSCRIPT> -loadProperties <PROPS> -->
+      <wlst debug="false" executeScriptBeforeFile="true" failOnError="true" properties="${PY_PROPERTIES_FILE}" fileName="/home/weblogic/var/py/AdminServer.logging.py">
+      </wlst>
+    </sequential>
+  </target>
+
+  <target name="wls_machines_setup" description="Setup all known machines in the domain" depends="">
+    <sequential>
+      <!-- wlst call: same as java weblogic.WLST <PYSCRIPT> -loadProperties <PROPS> -->
+      <wlst debug="false" executeScriptBeforeFile="true" failOnError="true" properties="${PY_PROPERTIES_FILE}" fileName="/home/weblogic/var/py/Machines.add.py">
+      </wlst>
+    </sequential>
+  </target>
+
+  <target name="wls_setup_adam" description="Setup Active Directory provider (dgita)" depends="">
+    <sequential>
+      <!-- wlst call: same as java weblogic.WLST <PYSCRIPT> -loadProperties <PROPS> -->
+      <wlst debug="false" executeScriptBeforeFile="true" failOnError="true" properties="${PY_PROPERTIES_FILE}" fileName="/home/weblogic/var/py/Realms.ADAMprovider.py">
+      </wlst>
+    </sequential>
+  </target>
+
+  <target name="wls_server_add" description="Add a server to an existing domain" depends="">
+    <sequential>
+      <!-- wlst call: same as java weblogic.WLST <PYSCRIPT> -loadProperties <PROPS> -->
+      <wlst debug="false" executeScriptBeforeFile="true" failOnError="true" properties="${PY_PROPERTIES_FILE}" fileName="/home/weblogic/var/py/ManagedServer.add.py">
+      </wlst>
+    </sequential>
+  </target>
+
+  <target name="wls_cluster_add" description="Add a cluster to an existing domain" depends="">
+    <sequential>
+      <!-- wlst call: same as java weblogic.WLST <PYSCRIPT> -loadProperties <PROPS> -->
+      <wlst debug="false" executeScriptBeforeFile="true" failOnError="true" properties="${PY_PROPERTIES_FILE}" fileName="/home/weblogic/var/py/Cluster.add.py">
+      </wlst>
+    </sequential>
+  </target>
+
+  <target name="wls_cluster_add_server" description="Add a server to an existing cluster" depends="">
+    <sequential>
+      <!-- wlst call: same as java weblogic.WLST <PYSCRIPT> -loadProperties <PROPS> -->
+      <wlst debug="false" executeScriptBeforeFile="true" failOnError="true" properties="${PY_PROPERTIES_FILE}" fileName="/home/weblogic/var/py/Cluster.add_server.py">
+      </wlst>
+    </sequential>
+  </target>
+
+  <target name="runpyscript" description="Runs a script" depends="">
+    <sequential>
+      <!-- wlst call: same as java weblogic.WLST <PYSCRIPT> -loadProperties <PROPS> -->
+      <wlst debug="false" executeScriptBeforeFile="true" failOnError="true" properties="${PY_PROPERTIES_FILE}" fileName="${PY_SCRIPT}">
+      </wlst>
+    </sequential>
+  </target>
+</project>

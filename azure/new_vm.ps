@@ -1,0 +1,49 @@
+###############Global info##################
+#Provide subscription username
+$username="admin@celfocusoneit.onmicrosoft.com"
+$password="gfEccFs2102020"
+#Provide the name of the resource group
+$resourceGroupName="SG_IoT_Global-RG"
+#Provide VM name
+$vmname="m2mmicroappssit01"
+#Provide Nic name
+$nicname="$vmname-nic"
+ 
+###############PIP Info #Optional for PIP#######
+#Provide Public IP Name
+$pipname= "$vmname-PIP"
+$piptype= "Dynamic" # Dynamic or Static
+ 
+###############NIC Info####################
+#Provide Virtual Network Name
+$vnetname="Cloud-Novabase-Network"
+#Provide Subnet Name
+$subnetname="N10-254-3_Subnet-1"
+#Provide Private IP Adress to be lessed
+$pip="10.254.3.23"
+#Provide Security Group Name
+$sgname="Safe_Access_From_Internet"
+#Provide IP configurations Name
+$ipconfigname ="ipconfig1" #Optional for PIP
+ 
+################VM Info####################
+#Provide image name to be deploy
+$imagename="Centos7-Base_AZ_v2"
+#Provide Admin username
+ 
+#Provide Admin password
+ 
+#Provide VM Size
+$vmsize="Standard_A2m_v2"
+ 
+##########################################
+ 
+#Log in
+az login -u $username -p $password
+#create nic
+az network nic create --resource-group $resourceGroupName --vnet-name $vnetname --subnet $subnetname --name $nicname --private-ip-address $pip --network-security-group $sgname
+ 
+#create VM
+az vm create --resource-group $resourceGroupName --image $imagename --name $vmname --admin-username celfocus --admin-password Celfocus2018 --nics $nicname --size $vmsize
+ 
+##END##

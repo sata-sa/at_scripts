@@ -1,0 +1,12 @@
+0. (só se tiver na rede da NB)
+Activar o proxy server no powershell, mandatorio através da Novabase
+[System.Net.WebRequest]::DefaultWebProxy.Credentials = [System.Net.CredentialCache]::DefaultCredentials
+
+1.
+p/ linkar com a conta do Azure a sessão:
+Add-AzureAccount
+
+
+#List all VMs under a specific subscribtion
+
+Get-AzureVM | select Name, Servicename, IPAddress, Powerstate, VirtualNetworkName

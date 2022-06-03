@@ -1,0 +1,60 @@
+<style type="text/css">
+
+body { background-color: #666688; font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: normal; font-size: 10pt; color: #ffffff; margin: 0 }
+p, td, tr, pre { font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: normal; font-size: 10pt; color: #ffffff }
+
+table.thread_style { cursor: hand; border: 2px solid rgb(192,192,192) }
+td.thread_style { cursor: hand; border: 1px solid rgb(128,128,128) }
+tr.thread_style { cursor: hand; border: 1px solid rgb(128,128,128) }
+.prio { font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 12pt; color: #dddddd }
+.nid { font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 12pt; color: #dddddd }
+.tid { font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 12pt; color: #dddddd }
+.state {font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 12pt; color: #ff6543 }
+a.thread_state_small:link    { text-decoration: none; font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 9pt; color: #00ff00 }
+a.thread_state_small:visited { text-decoration: none; font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 9pt; color: #aaffaa }
+a.thread_state_small:active  { text-decoration: none; font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 9pt; color: #aaffaa }
+a.thread_state_small:hover   { text-decoration: none; font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 9pt; color: #aaffaa }
+
+a.thread_state_small_g:link    { text-decoration: none; font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 9pt; color: #00ff00 }
+a.thread_state_small_g:visited { text-decoration: none; font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 9pt; color: #aaffaa }
+a.thread_state_small_g:active  { text-decoration: none; font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 9pt; color: #aaffaa }
+a.thread_state_small_g:hover   { text-decoration: none; font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 9pt; color: #aaffaa }
+
+a.thread_state_small_y:link    { text-decoration: none; font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 9pt; color: #ffff00 }
+a.thread_state_small_y:visited { text-decoration: none; font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 9pt; color: #ffffaa }
+a.thread_state_small_y:active  { text-decoration: none; font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 9pt; color: #ffffaa }
+a.thread_state_small_y:hover   { text-decoration: none; font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 9pt; color: #ffffaa }
+
+a.thread_state_small_r:link    { text-decoration: none; font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 9pt; color: #ff0000 }
+a.thread_state_small_r:visited { text-decoration: none; font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 9pt; color: #ffaaaa }
+a.thread_state_small_r:active  { text-decoration: none; font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 9pt; color: #ffaaaa }
+a.thread_state_small_R:hover   { text-decoration: none; font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 9pt; color: #ffaaaa }
+
+.green { font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 12pt; color: #00ff00 }
+.yellow { font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 12pt; color: #ffff00 }
+.red {font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 12pt; color: #ff0000 }
+.object { font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; text-decoration: underline; font-size: 10pt; color: #ffff00 }
+
+
+h2 {font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; text-decoration: underline; font-size: 16pt; color: #ffffff }
+
+ul { list-style-type: square }
+li { line-height: 140% }
+
+.bold   { font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 10pt; color: #ffffff }
+.text   { font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: normal; font-size: 10pt; color: #ffffff; line-height: 140%; }
+.big   { font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 14pt; color: #ffffff; line-height: 100%; margin-left: 0px; margin-right: 0px }
+.waiting_on   { font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 14pt; color: #ffff00; line-height: 100%; margin-left: 0px; margin-right: 0px }
+.waiting_on_type   { font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 10pt; color: #ffff00; line-height: 100%; margin-left: 0px; margin-right: 0px }
+.locked   { font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 14pt; color: #ff6543; line-height: 100%; margin-left: 0px; margin-right: 0px }
+.locked_type   { font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 10pt; color: #ff6543; line-height: 100%; margin-left: 0px; margin-right: 0px }
+.thread_state   { font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 14pt; color: #00ff00 }
+.thread_state_small { font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 9pt; color: #00ff00 }
+
+a:link    { text-decoration: none; font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 10pt; color: #FF9800 }
+a:visited { text-decoration: none; font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 10pt; color: #FF9800 }
+a:active  { text-decoration: none; font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 10pt; color: #ffffff }
+a:hover   { text-decoration: none; font-family: Verdana,Arial,Helvetica,sans-serif; font-weight: bold; font-size: 10pt; color: #ffffff }
+
+</style>
+

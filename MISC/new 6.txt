@@ -1,0 +1,144 @@
+
+
+
+git clone https://app.celfocus.com/gitlab/msem-am/msem_security/msem_security_baseline.git
+git pull --rebase https://app.celfocus.com/gitlab/msem-am/msem_security/msem_security_baseline.git
+
+ansible-playbook msem_security_baseline/audit.yml -i hosts.list --extra-vars "ansible_user=nb23929" -kK
+
+
+IPS saida - bash$ dig +short myip.opendns.com @resolver1.opendns.com
+NB: 88.157.199.115
+CF OVH1: 164.132.85.1
+AZURE: 52.174.156.71
+AWS CLP: 79.125.96.72
+
+CHAVE NB23929@ms-ansible01:
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDg78RJWkr9csF+GIhZxanawAOO/OnzBPSUi8Wo5Hv4pb18v2mICGe4YuNtAaU1bscVw6+BELmxxQEM7qwKHqj7td3zHtiy9yUVaYcyy/uciFEnaKeNq592yvBolc0iBOs275tCsZ4Fnz4mYWeQWXj9RDEM9XbVvCp7fjsz2zJD2pi245TakvsyT+HBleoiV2WT0BAcDr0iDTfS1nV9m36AqrSlJTKnHIQsMoxMTCsPSTZKjGY3IKKpR4jK2zABUE4Q70nLbdmxTCH49HEhYuhdd8uSCOUWV83Z4kyPqb5gf50nwGh3xqj8ZtRTviel2eiN7x/bCWZdmErVdJ+Bz2AZ NB23929@ms-ansible01
+-------------------------------------
+IPTELECOM
+
+VPN + nb23929/Celfocus91
+FIREWALL - Done
+VM's - Falta report
+VMWARE - Done
+
+LDAP UC: nb23929/Celfocus91
+nb23929/W6ggsKUd3sJu
+
+ansible-playbook msem_security_baseline/audit.yml -i hosts.list --extra-vars "ansible_user=nb23929" -kK
+
+
+beerbags (192.168.250.5)
+
+sep (192.168.250.15)
+smsvpndb01 (192.168.250.18)
+smsvpndb02 (192.168.250.19)
+smsvpnportal01 (192.168.250.16)
+smsvpnportal02 (192.168.250.17)
+
+
+
+BB - mastro-appliance (192.168.10.103)
+BB - r40build (192.168.10.141)
+BB - r50build (192.168.10.130)
+X - Falta justificação de BB
+
+14.30 - Diogo Oliveira
+simulator02 (192.168.250.6) - UBUNTU 20.10 - sem suporte - corre containers, precisa de conexao para o mcas, range de 5000~5600 + 3800~3900 + 14502. Baixo impacto, é so migrar o container.
+onenet-repo (192.168.250.23) - corre containers, repositorio nexus, é so usado internamente. Baixo impacto, so precisam de mexer no container.
+                               X - Validar o erro de python
+X - Validar interligações com o MCAS (portos e IP's)
+
+15.00 - Ricardo Galvão & Silvia Catarino
+gccldap (192.168.250.20) - corre weblogic e testes em docker, ja num user aplicacional. tem que ter acesso a vcas, range ?????. Baixo impacto.
+X - Validar interliações com o MCAS (portos e IP's)
+
+15.30 - Ricardo Galvão + Aitor Gauna + Diogo Oliveira.
+ngin (192.168.10.193) - corre simulador de trafego + USB licenca, conectividade com o VCAS. Os utilizadores locais para correrem as aplicações tem que ter admin. SSH + STP + RDP. Medio impacto, configuracao de IP a nivel do VCAS e automatismos. 
+X - Validar se pode ir pro dominio. Validar interligações com o MCAS (portos e IP's)
+
+16.00 - Aitor Gauna + Diogo Oliveira + Ricardo Galvão
+k8s-master (192.168.75.1) - UBUNTU - 
+k8s-nodes01 (192.168.75.2) - UBUNTU - 
+- Medio Impacto de migração - conectivades com WEB, so um no para ter know-how.
+X - Validar migração para RHEL based distro.
+
+16.30 - 
+ubuntu (192.168.250.90) - jenkins - A equipa gostava de migrar estes servicos/software para docker ou um sitema managed. Baixo impacto, no entanto a avaliar pela equipa.
+ateam (192.168.250.12) - Ubuntu - A equipa indica que tem como destino ser apagada pra semana.
+
+17.00 - 
+plat e repo nao podem ser managed pois nao podem perder a ligacao ao IPA/IPAM
+revproxy2 (192.168.99.49)
+as (192.168.10.145)
+gitlab (192.168.250.40)
+
+
+### 2021/09/30 ###
+glmaps - sem validação.
+esae4, esae5, nfs-uc - Corre docker. Serve para compilação de pacotes do MCAS. É usado por pipelines. Os objectos são enviados directamente para MCAS. Necessita de SSH para dentro do MCAS. Usam foward X-11, o impacto é baixo desactivar o x11. Nao ha impacto desligar o FTP e telnet. ESAE4 a compilação é local, na ESAE5 a compilação é via docker.
+	- Requisito comunicação com rapidez para com o MCAS. Pacotes de 200/300MB. SSH/SFTP para com o MCAS.
+simulator01/02 - range de 5000~5600 + 3800~3900 + 14502 +5333. Correm containers e compiladores locais. 4 equipas a usar esta VM. Muita gente a usar, ninguem se entende, não é possivel obter uma lista clara dos impactos. Nao existe impacto de colocar os javas owned by root com o utilizador aplicacional.
+
+
+sep (192.168.250.15)
+smsvpndb01 (192.168.250.18)
+smsvpndb02 (192.168.250.19)
+smsvpnportal01 (192.168.250.16)
+smsvpnportal02 (192.168.250.17)
+- O impacto de managed para a equipa é grande. Usam bastante roots para gestao e funcionamento. Tem ligacao as BD's do MCAS. Life-cycle do produto necessita de acessos e controlo.
+- Se perderem a independencia de gestao as vm's podem perder o seu proposito.
+- A equipa tem que enviar a justificação para blackbox
+
+
+
+
+-------------------------------------
+Digital Ocean
+
+IP Publico + nb23929/TRvD3d4YbP5q8Zvs
+
+142.93.141.67 nexus || UBUNTU
+ims.celfocus.pt open-ims || UBUNTU || 
+167.99.39.27 videochat || UBUNTU
+
+ansible-playbook msem_security_baseline/audit.yml -i hosts/hosts_digital_ocean.txt --extra-vars "ansible_user=nb23929" -kK
+
+https://cloud.digitalocean.com/projects?i=a56bbc || andre.reis.rodrigues@gmail.com/Celfocus91
+
+-------------------------------------
+Google Cloud
+
+msem.nb23929@gmail.com/Celfocus.2021
+
+### Notas meeting 30/09/2021###
+
+- conetividade de fora , kubernets pedir para estar exposto, exposto po cluster
+- documentacao é necessario estar exposta na internet "documentantion sao 4" pods
+- pods onenet tem de estar exposto a internet
+- runner nao precisam de internet, mas precisam de conetividade do gitlab EM, tem de ter acesso ao nexus-repo-nexus e o repo nexus preicsa de internet para ir buscar as dependencias
+- IAM ter acesso ao kuberntes engine developer/perfil mais baixo , kubernets engine admin perifl mais alto , para correrem o terraform é necessario permissoes,
+- tem de ter acesaso ao storage do container registry., docker images,
+- gitlab nginx ingress controler (é o que esta exposto a internet) é preciso para os certificados, tem de ficar na plataforma deles devido o dominio deles,
+
+-------------------------------------
+AWS
+
+https://us-east-2.console.aws.amazon.com/
+344582076000
+nb23929/Celfocus91
+london
+
+nao vai ser necessario SES na nova conta, é pra abater.
+
+
+
+
+
+
+
+
+
+
+

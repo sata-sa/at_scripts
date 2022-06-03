@@ -1,0 +1,60 @@
+install xinetd (yum install xinetd)
+
+vg1192yr:root:/root $ cat /etc/xinetd.d/ciasmon_agent
+service ciasmon_agent
+{
+        type           = UNLISTED
+        port           = 6556
+        socket_type    = stream
+        protocol       = tcp
+        wait           = no
+        user           = ciasmon
+        server         = /opt/SP/ciasmon/home/check_mk_agent.linux
+        # configure the IP address(es) of your Nagios server here:
+        only_from      = 10.179.181.167  176.125.9.67 127.0.0.1
+        # Don't be too verbose. Don't log every check. This might be
+        # commented out for debugging. If this option is commented out
+        # the default options will be used for this service.
+        log_on_success =
+        disable        = no
+}
+
+
+
+
+
+as ciasmon:########################
+
+untar do tar
+
+cp ciasmon_agent.tar /opt/SP/ciasmon/home/
+cd /opt/SP/ciasmon/home/
+tar -xvzf ciasmon_agent.tar
+chown ciasmon:ciasmon *
+echo "## check_mk_configs:" >> /opt/SP/ciasmon/home/.bash_profile
+echo "export MK_CONFDIR=\"/opt/SP/ciasmon/home/etc/check_mk_agent\"" >> /opt/SP/ciasmon/home/.bash_profile
+echo "export MK_LIBDIR=\"/opt/SP/ciasmon/home/\"" >> /opt/SP/ciasmon/home/.bash_profile
+echo "export MK_VARDIR=\"/opt/SP/ciasmon/home/etc/check_mk_agent\"" >> /opt/SP/ciasmon/home/.bash_profile
+
+systemctl restart xinetd
+
+
+
+as root ########################
+
+systemctl restart xinetd
+
+
+########################################################################################################################
+
+Quando o apache não arranca
+
+   # cd /run/
+   # ls
+   # mkdir /run/httpd
+   # chmod 710 /run/httpd/
+   # chown root:apache /run/httpd/
+   # mkdir /run/mod_fcgid
+   # chown apache:apache mod_fcgid
+   # systemctl start httpd
+   # systemctl status httpd.service 

@@ -1,0 +1,66 @@
+﻿## Emanuel Almeida - 2017.07.26
+## Load balancer criado para maquinas comunicarem com o mesmo IP para o exterior
+
+Criar um "Public IP address" para servir de front end com exterior:
+
+Name:			m2m-vdf0
+IP Version:		IPV4
+IP address assignment: Static
+DNS name:		m2m-vdf01.westeurope.cloudapp.azure.com 
+Subscription:	Enterprise
+Use Existing:	SG_IoT_Global-RG
+Location:		West Europe
+
+
+Criar o Load Balancer no azure já com o front end definido:
+
+Name:			m2mLB-vdf01
+Public IP:		m2m-vdf01
+Type: 			Public
+Subscription:	Enterprise
+Use Existing:	SG_IoT_Global-RG
+Location:		West Europe
+
+No Load Balancer em Backend pools adicionar as maquinas internas: (Para se adicionar mais do que uma maquina as mesmas devem pertencer a um "Availability sets"):
+
+
+Name:			m2mosb
+associated to: 	m2m-vodafone (availability set)
++ Add a target network ip configuration
+	Target virtual machine: 	m2miitcosbdev
+	Network ip configuration:	10.254.3.54
++ Add a target network ip configuration
+	Target virtual machine: 	m2miitcosbuat
+	Network ip configuration:	10.254.3.47
+
+Health probes para adicionar as portas que se iram usar nas "Load Balancing rules"
+
+Name:				 HTTPS
+PROTOCAL: 			 TCP
+Port:			  	 443
+Interval:			 5
+Unhealthy threshold: 2
+
+Adiconar as "Load Balancing rules"
+
+Name: https
+IP Version: IPv4
+Frontend IP address: 
+Protocol: TCP
+Port: 443
+Backend Port: 443
+Backend Pool : m2mosb
+health probe: 443
+Session persintence: none
+floating ip: enable
+
+
+Teste:curl https://bra.privateinternetaccess.com/pages/whats-my-ip/ > test.txt
+
+Resultado deve ser o ip publico criado neste caso ficou 40.68.47.21: 
+comando:less text.txt
+
+        <div class="ipbox-header">Suas informações privadas estão expostas</div>
+    <ul>
+      <li>Endereço IP:
+        <span class="darktext">40.68.47.21</span>

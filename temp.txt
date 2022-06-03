@@ -1,0 +1,47 @@
+
+
+
+########
+# TEMP #
+########
+
+===================================================================================================================
+
+Confidential
+Internal Use
+Public
+
+
+L!nux1me
+
+https://www.receivesms.co/portugese-phone-numbers/pt/
+https://www.receivesms.co/portugese-phone-number/3358/
+https://www.receivesms.co/portugese-phone-number/2125/
+https://www.receivesms.co/portugese-phone-number/3357/
+
+
+
+VFGROUPSVC.CIASHARB 
+Fpo8421Xrs7h5TR1
+Fpo8421Xrs7h5TR2
+
+5x114.3
+
+10.235.4.210
+.\nb23929
+cf@20!9
+
+
+https://myit.vodafone.com/ux/myitapp/#/profile?activityTab=requests
+
+
+===================================================================================================================
+ALTER USER sysdba_emrm IDENTIFIED BY passwordsysdba312;
+
+select b.group#, a.archived, a.status, b.status, b.member from  v$log a, v$logfile b where a.group#=b.group# order by 1,2;
+
+CREATE UNDO TABLESPACE undo2 datafile '/u01/app/oracle/oradata/undo2_df1.dbf' size 20m autoextend on maxsize 200m;
+
+
+It's not possible obtain logs from aws to send to our tool localy.
+Nominal accounts in use.

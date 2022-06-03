@@ -1,0 +1,11 @@
+# Emanuel Almeida
+20.12.2017 - Criar uma VM no Azure usando o CLI.
+ref: https://docs.microsoft.com/pt-pt/cli/azure/vm?view=azure-cli-latest#az_vm_create 
+
+
+az network nic create -g SG_IoT_Global-RG --vnet-name Cloud-Novabase-Network --subnet N10-254-3_Subnet-1 --name m2mnagios-PrimaryNic --private-ip-address 10.254.3.82 --network-security-group Safe_Access_From_Internet
+
+-------------------------------------------------------------------------------
+
+az vm create --resource-group SG_IoT_Global-RG --name m2mnagios --admin-username celfocus --admin-password XXXXXXXX --nics m2mnagios-PrimaryNic --size Standard_B2s --image OpenLogic:CentOS-LVM:7-LVM:7.4.20171212 --use-unmanaged-disk --storage-account m2mnagios --storage-container-name vhds --storage-sku Standard_GRS
+

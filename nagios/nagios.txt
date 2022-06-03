@@ -1,0 +1,70 @@
+NAGIOS
+
+ssh
+	hostname:m2mnagios
+	ip:10.254.3.82
+	u: emadmin
+	p: wEd0Ye1_0010
+	u: msnagios
+	p: 5arda5
+
+web
+	u: nb23929
+	p: Celfocus#2018
+	
+	gu: iotview
+	gp: iotview
+
+	
+===================================================================================================================
+## USING SNMPD ##
+	
+#depois de estar como root:
+
+	yum install -y net-snmp net-snmp-utils
+
+	# vim /etc/snmp/snmpd.conf
+	cp /etc/snmp/snmpd.conf /etc/snmp/snmpd.conf.bck
+	sed -e '/com2sec notConfigUser  default       public/s/^/#/g' -i /etc/snmp/snmpd.conf
+	sed -e '/sec.name source community/s/^/#/g' -i /etc/snmp/snmpd.conf
+	sed -i '/#com2sec notConfigUser  default       public/a rocommunity monitoring 10.254.0.0/16' /etc/snmp/snmpd.conf
+	sed -i '/syslocation Unknown/c\syslocation azure_machine' /etc/snmp/snmpd.conf
+	sed -i '/syscontact Root /c\syscontact vfg_iot_env_management@celfocus.com' /etc/snmp/snmpd.conf
+
+	RHEV6: service snmpd restart && service snmpd status && chkconfig --level 2345 snmpd on
+	RHEV7: systemctl enable snmpd && systemctl restart snmpd && systemctl status snmpd
+	
+
+#testar na maquina consumidora:
+	snmpwalk -v 1 -c monitoring -O e 10.254.3.50
+	
+	
+===================================================================================================================
+## USING CHECK_MK AGENT ##
+
+useradd msnagios && echo 5arda5 | passwd --stdin msnagios
+	
+	
+# problemas na firewall?
+	# RHEV6
+	iptables -I INPUT -p tcp -m tcp --dport 6556 -j ACCEPT && service iptables save && service iptables restart
+	
+	
+	
+#executar semi-auto	
+	yum install -y xinetd && useradd msnagios && echo 5arda5 | passwd --stdin msnagios && cat /etc/*release && grep AllowUsers /etc/ssh/sshd_config
+	
+# instalar o xinetd sem o yum
+	cd /tmp && wget mirror.centos.org/centos/6/os/x86_64/Packages/xinetd-2.3.14-40.el6.x86_64.rpm && yum localinstall -y xinetd-2.3.14-40.el6.x86_64.rpm && useradd msnagios && echo 5arda5 | passwd --stdin msnagios && cat /etc/*release && grep AllowUsers /etc/ssh/sshd_config
+
+
+RHEV6: cd /home/msnagios/ && tar -xvf m2m_nagios_agent.tar && chown -R msnagios:msnagios * && cp xinetd_conf/check_mk /etc/xinetd.d/ && chown root:root /etc/xinetd.d/check_mk && chmod 600 /etc/xinetd.d/check_mk && service xinetd restart && service xinetd status && chkconfig --level 2345 xinetd on
+RHEV7: cd /home/msnagios/ && tar -xvf m2m_nagios_agent.tar && chown -R msnagios:msnagios * && cp xinetd_conf/check_mk /etc/xinetd.d/ && chown root:root /etc/xinetd.d/check_mk && chmod 600 /etc/xinetd.d/check_mk && systemctl enable xinetd && systemctl restart xinetd && systemctl status xinetd	
+
+
+===================================================================================================================
+testar a partir da maquina do nagios:	 nc -v 10.254.3.62 6556
+
+===================================================================================================================
+https://mathias-kettner.de/checkmk_localchecks.html
+

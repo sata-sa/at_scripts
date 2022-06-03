@@ -1,0 +1,84 @@
+
+
+
+
+=====================================================================================================================================================
+
+az vm run-command invoke -g SG_IoT_Global-RG --command-id RunShellScript --scripts "touch /tmp/teste.txt" -n m2mnagios
+
+
+================ Instalar agente ====================================================================================================================
+
+waagent --version
+cd /tmp && wget https://github.com/Azure/WALinuxAgent/archive/v2.2.25.zip && unzip v2.2.25.zip && cd WALinuxAgent-2.2.25 && python setup.py install
+#se necessario -> yum install -y python-setuptools
+vim /etc/waagent.conf
+service waagent restart && waagent --version
+# RHEV6 # chkconfig | grep waagent  ### if not present then; -> chkconfig --add waagent && chkconfig waagent on
+# RHEV7 # use systemctl 
+
+## Remover da pasta /tmp os ficheiros de instalacao
+
+cd /tmp && wget https://github.com/Azure/WALinuxAgent/archive/v2.2.25.zip && unzip v2.2.25.zip && cd WALinuxAgent-2.2.25 && python setup.py install && service waagent restart && waagent --version && chkconfig --add waagent && chkconfig waagent on
+
+
+================ Criar VMs Azure ====================================================================================================================
+
+az network nic create -g SG_IoT_Global-RG --vnet-name Cloud-Novabase-Network --subnet N10-254-3_Subnet-1 --name m2mkibana01-PrimaryNic --private-ip-address 10.254.3.87 --network-security-group Safe_Access_From_Internet
+
+az vm create --resource-group SG_IoT_Global-RG --name m2mkibana01 --admin-username celfocus --admin-password XXXXXXXXXX --nics m2mkibana01-PrimaryNic --size Standard_B2s --image OpenLogic:CentOS-LVM:7-LVM:7.4.20171212 --use-unmanaged-disk --storage-account m2mkibana01 --storage-container-name vhds --storage-sku Standard_GRS
+
+
+================ Alterar Hostname VMs Azure =========================================================================================================
+
+hostname m2mmicroappsit01
+
+vim /etc/sysconfig/network
+
+
+================ Clonar VMs Azure ===================================================================================================================
+
+## SO DISCO OS ##
+az network nic create -g SG_IoT_Global-RG --vnet-name Cloud-Novabase-Network --subnet N10-254-3_Subnet-1 --name m2mmicroappsit01-PrimaryNic --private-ip-address 10.254.3.68 --network-security-group Safe_Access_From_Internet
+
+az storage blob copy start --source-uri https://m2mmicroservices014538.blob.core.windows.net/vhds/m2mmicroservices01-os-8382.vhd --destination-container vhds --account-name m2mmicroservices014538 --destination-blob m2mmicroappsit01-os.vhd
+
+az vm create --resource-group SG_IoT_Global-RG --name m2mmicroappsit01 --nics m2mmicroappsit01-PrimaryNic --size Standard_A2m_v2 --os-type Linux --use-unmanaged-disk --attach-os-disk https://m2mmicroservices014538.blob.core.windows.net/vhds/m2mmicroappsit01-os.vhd
+
+
+## DISCO OS + DISCO DATA ##
+az network nic create -g SG_IoT_Global-RG --vnet-name Cloud-Novabase-Network --subnet N10-254-3_Subnet-1 --name m2mosbcommon-PrimaryNic --private-ip-address 10.254.3.29 --network-security-group Safe_Access_From_Internet
+
+az storage blob copy start --source-uri https://m2menvsit02.blob.core.windows.net/vhds/m2mosbsit2-os.vhd --destination-container vhds --account-name m2menvsit02 --destination-blob m2mosbcommon-os.vhd
+az storage blob copy start --source-uri https://m2menvsit02.blob.core.windows.net/vhds/m2mosbsit2-0.vhd --destination-container vhds --account-name m2menvsit02 --destination-blob m2mosbcommon-0.vhd
+
+az vm create --resource-group SG_IoT_Global-RG --name m2mosbcommon --nics m2mosbcommon-PrimaryNic --size Standard_A2m_v2 --os-type Linux --use-unmanaged-disk --attach-os-disk https://m2menvsit02.blob.core.windows.net/vhds/m2mosbcommon-os.vhd --attach-data-disk https://m2menvsit02.blob.core.windows.net/vhds/m2mosbcommon-0.vhd
+
+
+================ Auto-login Azure ===================================================================================================================
+
+## TO SAVE ##
+Save-AzureRmProfile -Path “D:\profile\autoload.json”
+
+## TO LOAD ##
+Import-AzureRmContext -Path “D:\profile\autoload.json”
+
+
+================ Azure create existing VM with availability-set =====================================================================================
+
+az network nic create -g SG_IoT_Global-RG --vnet-name Cloud-Novabase-Network --subnet N10-254-3_Subnet-1 --name m2mportalsit03-PrimaryNic --private-ip-address 10.254.3.13 --network-security-group Safe_Access_From_Internet
+
+az vm create --resource-group SG_IoT_Global-RG --name m2mportalsit03 --nics m2mportalsit03-PrimaryNic --size Standard_A2m_v2 --os-type Linux --availability-set m2m-vodafone --use-unmanaged-disk --attach-os-disk https://m2menvsit02.blob.core.windows.net/vhds/m2mportalsit03-os.vhd
+
+az vm create --resource-group SG_IoT_Global-RG --name m2mportalsit03 --nics m2mportalsit03-PrimaryNic --size Standard_A2m_v2 --os-type Linux --use-unmanaged-disk --attach-os-disk https://m2menvsit02.blob.core.windows.net/vhds/m2mportalsit03-os.vhd
+
+
+================ PowerShell =========================================================================================================================
+
+ (Get-AzureRmVM -ResourceGroupName "SG_IOT_GLOBAL-RG" -Name "m2msmeosbsit" -Status).VMAgent.VMAgentVersion
+
+ Get-AzureRmVM -ResourceGroupName "SG_IOT_GLOBAL-RG" -Status| select Name, PowerState
+ 
+ Stop-AzureRmVM -ResourceGroupName "SG_IOT_GLOBAL-RG" -Name "m2msmebpeldev" -Force
+ 
+

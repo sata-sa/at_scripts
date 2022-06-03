@@ -1,0 +1,101 @@
+
+
+sqlite> select * from sys_osinfo;
+1983954911|2020/12/15 13:41:50|cf-preprd-wazuh01|x86_64|CentOS Linux|7.6||7|6||centos|Linux|3.10.0-957.10.1.el7.x86_64|#1 SMP Mon Mar 18 15:06:45 UTC 2019|
+
+sqlite> select * from sys_ports;
+2124628864|2020/12/15 13:41:55|tcp|0.0.0.0|1515|0.0.0.0|0|0|0|1068497|listening||
+2124628864|2020/12/15 13:41:55|tcp|0.0.0.0|1516|0.0.0.0|0|0|0|1070323|listening||
+2124628864|2020/12/15 13:41:55|tcp|0.0.0.0|22|0.0.0.0|0|0|0|24283|listening||
+2124628864|2020/12/15 13:41:55|tcp|127.0.0.1|25|0.0.0.0|0|0|0|23386|listening||
+2124628864|2020/12/15 13:41:55|tcp6|::|22|::|0|0|0|24285|listening||
+2124628864|2020/12/15 13:41:55|tcp6|::|55000|::|0|0|0|195946|listening||
+2124628864|2020/12/15 13:41:55|tcp6|::1|25|::|0|0|0|23387|listening||
+2124628864|2020/12/15 13:41:55|tcp6|::|6556|::|0|0|0|23579|listening||
+
+
+
+/var/ossec/queue/db
+
+sqlite3 000.db "select * from sys_osinfo;"
+
+[root@cf-preprd-wazuh01 db]# sqlite3 000.db "select * from sys_osinfo;" | awk -F "|" '{print $3}'
+cf-preprd-wazuh01
+
+[root@cf-preprd-wazuh01 db]# sqlite3 000.db "select * from sys_ports;" | awk -F "|" '{print $5}' | sort -n | uniq
+22
+25
+1515
+1516
+6556
+55000
+
+
+
+  369  vim /etc/postfix/sasl_passwd
+  370  history
+  371  postmap /etc/postfix/sasl_passwd
+  372  systemctl restart wazuh-manager
+  373  systemctl status wazuh-manager
+  374  echo "Test mail from postfix" | mail -s "Test Postfix PROD" -r "nbcfwazuh@novabase.pt"  andre.reis.rodrigues@celfocus.com && tailf /var/log/maillog
+  
+  
+  
+  
+#!/bin/bash
+
+echo "STARTING..."
+
+echo "Declaring variables."
+## VARIABLES
+#FILES=/var/ossec/queue/db/*
+FILES=/var/ossec/queue/db/*
+FILENAME=agents_inv.txt
+
+echo "Cleaning old info file."
+## Limpeza do ficheiro existente
+if [ -f $FILENAME ]; then
+  rm $FILENAME
+fi
+
+echo "Begining data collection."
+## Ciclo de consulta de dados
+for f in $FILES
+do
+   if [[ $f =~ ^.*[0-9]+.db$ ]]; then
+     #echo "Inventory for $f" >> $FILENAME
+     echo "#HOSTNAME:" >> $FILENAME
+     sqlite3 $f 'select * from sys_osinfo' | awk -F "|" '{print $3}' >> $FILENAME
+     #sqlite3 $f 'select * from sys_hwinfo' >> $FILENAME
+     #sqlite3 $f 'select * from sys_processes' >> $FILENAME
+     #sqlite3 $f 'select * from sys_programs' >> $FILENAME
+     #sqlite3 $f 'select * from sys_hotfixes' >> $FILENAME
+     #sqlite3 $f 'select * from sys_netiface' >> $FILENAME
+     #sqlite3 $f 'select * from sys_netproto' >> $FILENAME
+     echo "#IP ADDRESS:" >> $FILENAME
+     sqlite3 $f 'select * from sys_netaddr' | awk -F "|" '{print $4}' >> $FILENAME
+     echo "#OPEN PORTS" >> $FILENAME
+     sqlite3 $f 'select * from sys_ports' | awk -F "|" '{print $5}' | sort -n | uniq >> $FILENAME
+     echo "" >> $FILENAME
+     echo "" >> $FILENAME
+     #echo "" >> $FILENAME
+   fi
+done
+
+
+echo "Finished."
+
+  
+  
+  
+yum downgrade auditbeat-7.9.0 filebeat-7.9.0 && systemctl restart auditbeat filebeat && rm -rf /etc/yum.repos.d/elastic.repo /etc/yum.repos.d/wazuh*
+
+/etc/yum.repos.d/elastic.repo
+[elastic-7.x]
+name=Elastic repository for 7.x packages
+baseurl=https://artifacts.elastic.co/packages/7.x/yum
+gpgcheck=1
+gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
+enabled=1
+autorefresh=1
+type=rpm-md

@@ -1,0 +1,46 @@
+cf-poc-wazuh01		10.235.0.99		clp-poc.celfocus.intra
+
+cf-preprd-wazuh01	10.235.12.68
+cf-preprd-wazuh02	10.235.12.69
+cf-preprd-wazuh03	10.235.12.70
+cf-preprd-elastic01	10.235.12.71	clp-preprd.celfocus.intra
+cf-preprd-elastic02	10.235.12.72
+cf-preprd-elastic03	10.235.12.73
+cf-preprd-nfs01		10.235.12.74
+
+cf-prd-wazuh01		10.235.12.84
+cf-prd-wazuh02		10.235.12.85
+cf-prd-wazuh03		10.235.12.86
+cf-prd-elastic01	10.235.12.87	clp.celfocus.intra
+cf-prd-elastic02	10.235.12.88
+cf-prd-elastic03	10.235.12.89
+cf-prd-nfs01		10.235.12.90
+
+
+
+
+
+
+Regras de segurança e Baseline.
+- Login efetuado por contas comporativas (ex. NBXXXXX)
+- Contas aplicacionais para controlo das aplicações com privilegios controlados, sem acessos directos ou do exterior.
+- Politica de passwords alinhada com a politica em vigor na organização.
+- Acessos root/administrativos revogados/retirados. Estes acessos passam a ser exclusivos de MSEM.
+- Integracao na plataforma de monotorização de sistemas.
+- Integração na plataforma de monotorização de segurança.
+- Integração na plataforma de anti-virus.
+- Desabilitação de serviços e protocolos considerados inseguros.
+- Analise de vulnerabilidades presentes em pacotes de sistema.
+- Sincronização da data e hora dos sitemas com o serviço central.
+- Acesso aos sistemas via acesso controlado pela VPN corporativa da Novabase.
+- Configuração de regras de SO para proteção dos sistemas.
+- Controlo e rotação dos logs de sistema e autenticação.
+- Conectividades entre sistemas controladas via firewalls.
+- Certificados SSL e DNS para aplicações internas.
+
+
+
+Other - https://celfocusjira.atlassian.net/servicedesk/customer/portal/130/CFEMSEC-457
+Other - https://celfocusjira.atlassian.net/servicedesk/customer/portal/130/CFEMSEC-453
+Auth - https://celfocusjira.atlassian.net/servicedesk/customer/portal/130/CFEMSEC-520
+AV - https://celfocusjira.atlassian.net/servicedesk/customer/portal/130/CFEMSEC-549

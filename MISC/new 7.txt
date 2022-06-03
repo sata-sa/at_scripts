@@ -1,0 +1,139 @@
+
+Administration of environments WebLogic, Nagios, Cacti, Apache.
+UNIX System Administration (Solaris and Red Hat and Oracle Linux)
+Backup Administration (Veritas NetBackup)
+Automation via scripting (Shell/bash).
+Deploy of VM's in EXALOGIC virtual environment.
+DC control with HP/ORACLE/IBM equipment
+
+
+Dates:     January 2018 - September 2018
+Position or position held:   Release & Environment Management - Projecto IoT
+Main activities and responsibilities   Environment administration WebLogic 11g, Oracle BD 11g, Nagios.
+Administration of Linux CentOS systems in Microsoft AZURE virtual environment.
+Automação via Scripting e Jenkins.
+Installation, configuration of middleware and software in test environments, quality, and production of  various streams of the IoT project.
+Control of project streams through Jira tool and confluence.
+
+-----------
+
+Dates     September 2018 - February 2020
+Position or position held:   Release & Environment Management - Projecto NOC CIAS
+Main activities and responsibilities   K8s/Docker Administration.
+Administration of Linux Systems CentOS & RHEL, AZURE, OVH.
+  Automation via Scripting
+Installation, configuration of middleware and software in test environments, quality, and production of various streams of the NOC CIAS project.
+ Control of project streams through Jira tool and confluence.
+
+-----------
+
+Dates:     February 2020- Currently
+Position or position held:   Cyber-security
+Main activities and responsibilities   Conducting security audits
+Linux Systems Administration CentOS & RHEL
+Automation via Scripting & ANSIBLE
+Maintenance and configuration of the KIBANA & WAZUH tool
+Application of security baselines on Linux Vm's via Ansible
+
+
+#########################################################################################################################################################
+
+Main activities and responsibilities   Installation of residential electrical systems, electrical engines, installation of communications systems
+                                       "ITED", assembly of electrical automatisms.
+   Employer's name and address         PEEIE - Chaves
+       Type of company or sector       Electrical, Telephone and Mechanical Installations
+
+
+                             Dates     September 15, 2014 - September 14, 2015
+          Position or position held    Linux Systems Administration Trainee
+Main activities and responsibilities   Administration of environments WebLogic, Nagios, Cacti, Apache.
+                                       UNIX System Administration
+                                       Backup Administration (Veritas NetBackup)
+   Employer's name and address         GFI Portugal - Outsourcing at the Tax and Customs Authority
+       Type of company or sector       Information Technologies
+                             Dates     September 2015 - December 2017
+          Position or position held    Unix System Administration (Solaris and Red Hat)
+Main activities and responsibilities   Administration of environments WebLogic, Nagios, Cacti, Apache.
+                                       UNIX System Administration (Solaris and Red Hat and Oracle Linux)
+                                       Backup Administration (Veritas NetBackup)
+                                       Automation via scripting (Shell/bash).
+                                       Deploy of VM's in EXALOGIC virtual environment.
+                                       DC control with HP/ORACLE/IBM equipment
+    Employer's name and address        GFI Portugal - Outsourcing at the Tax and Customs Authority
+        Type of company or sector      Information Technologies
+
+
+                             Dates     January 2018 - September 2018
+           Position or position held   Release & Environment Management - Projecto IoT
+Main activities and responsibilities   Environment administration WebLogic 11g, Oracle BD 11g, Nagios.
+                                       Administration of Linux CentOS systems in Microsoft AZURE virtual environment.
+                                       Automação via Scripting e Jenkins.
+                                       Installation, configuration of middleware and software in test environments, quality, and production of
+                                       various streams of the IoT project.
+                                       Control of project streams through Jira tool and confluence.
+    Employer's name and address        Celfocus
+        Type of company or sector      Information Technologies / Telecommunications
+
+                             Dates     September 2018 - February 2020
+           Position or position held   Release & Environment Management - Projecto NOC CIAS
+Main activities and responsibilities   K8s/Docker Administration.
+                                       Administration of Linux Systems CentOS & RHEL, AZURE, OVH.
+                                       Automation via Scripting
+                                       Installation, configuration of middleware and software in test environments, quality, and production of
+                                       various streams of the NOC CIAS project.
+                                       Control of project streams through Jira tool and confluence.
+    Employer's name and address        Celfocus
+        Type of company or sector      Information Technologies / Telecommunications
+
+
+                             Dates     February 2020- Currently
+           Position or position held   Cyber-security
+Main activities and responsibilities   Conducting security audits
+                                       Linux Systems Administration CentOS & RHEL
+                                       Automation via Scripting & ANSIBLE
+                                       Maintenance and configuration of the KIBANA & WAZUH tool
+                                       Application of security baselines on Linux Vm's via Ansible
+    Employer's name and address        Celfocus
+        Type of company or sector      Information Technologies / Telecommunications
+
+
+     Education and training
+                             Dates     September 2004 to June 2007
+    Designation of the qualification   Technology Course of Level 3 electrotechnics and electronics
+                         assigned
+Main disciplines/professional skills   Electrotechnics and Electronics Technology Course
+                                       - Laboratory Practices of Electrotechnics and Electronics;
+                                       - Technological Applications of Electrotechnics and Electronics;
+                                       - Digital Systems;
+                                       - ITED;
+                                       - Programming of OMRON Automata;
+                                       - Installation and maintenance of Electric Motors and Generators;
+                                       There are others.
+       Name and type of teaching       Secondary School Dr. Júlio Martins - Chaves
+                    organisation
+                       Rating level    14 Values
+
+
+                             Dates     September 2007 to June 2014
+   Designation of the qualification    Degree in Computer Engineering
+                        assigned
+Main disciplines/professional skills   Computer Engineering
+                                       - Computer Networks;
+                                       - Computer Architectures;
+                                       - Digital Systems;
+                                       - Systems Administration
+                                       - VMware
+                                       - C/C++, PHP, HTML, CSS, JAVA, JAVA Android, MySQL
+                                       - Cisco Packet Tracer;
+                                       - MATLAB (2010)
+                                       - Openoffice,
+                                       - Apache, Gimp, Adobe Dreamweaver, Microsoft Visual Studio, Recuva (recovery of deleted files),
+                                       Filezilla (FTP).
+                                       Erasmus for 2 semesters in the 2013/2014 academic year
+       Name and type of teaching       Polytechnic Institute of Bragança - Higher School of Technology and Management
+                    organisation
+                       Rating level    13 Values
+                             Dates     October 2014
+Main disciplines/professional skills   - Initiation course to Android programming with duration of 20 Hours.
+       Name and type of teaching       Polytechnic Institute of Bragança - Higher School of Technology and Management
+                    organization

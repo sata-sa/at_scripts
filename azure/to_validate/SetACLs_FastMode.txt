@@ -1,0 +1,22 @@
+Import-Module azure
+#Grab your VM (change name)
+$vm = Get-AzureVM -ServiceName "m2miitcdev01" -Name "m2miitcdev01"
+ 
+$acl = New-AzureAclConfig
+#Add your subnets
+Set-AzureAclConfig -ACL $acl -AddRule Permit -RemoteSubnet "213.30.18.1/32" -Description "CFAll" -order 1
+Set-AzureAclConfig -ACL $acl -AddRule Permit -RemoteSubnet "88.157.199.115/32" -Description "NB All" -order 2
+Set-AzureAclConfig -ACL $acl -AddRule Permit -RemoteSubnet "93.108.237.178/32" -Description "Porto" -order 3
+Set-AzureAclConfig -ACL $acl -AddRule Permit -RemoteSubnet "88.157.199.114/32" -Description "NDevices -order 4
+ 
+#Get all endpoints without an ACL (number of rules are zero)
+$endpoints = Get-AzureEndpoint -VM $vm | where {$_.ACL.Rules.Count -eq 0}
+ 
+foreach ($ep in $endpoints)
+    {
+        #We need to tear down each endpoint and create a new one because of what weems to be a bug related to the ProbingPort
+        Remove-AzureEndpoint -VM $vm -Name ($ep.Name)
+        $vm | Update-AzureVM
+        Add-AzureEndpoint -VM $vm -Name ($ep.Name) -LocalPort ($ep.LocalPort) -PublicPort ($ep.Port) -Protocol ($ep.Protocol) -ACL $acl
+        $vm | Update-AzureVM
+    }

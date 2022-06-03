@@ -1,0 +1,31 @@
+@How to assign to CloudService a Public Reserved IP
+
+
+0. (só se tiver na rede da NB)
+Activar o proxy server no powershell, mandatorio através da Novabase
+[System.Net.WebRequest]::DefaultWebProxy.Credentials = [System.Net.CredentialCache]::DefaultCredentials
+
+1.
+p/ linkar com a conta do Azure a sessão:
+Add-AzureAccount
+
+2.
+#lists the reserved IP information.
+Get-AzureReservedIP |Select ReservedIPName,Address
+
+P.S. Get-AzureReservedIP -> detailed information about used ips
+
+3.
+#lists the services you have.
+Get-AzureService |Select ServiceName
+
+4.
+#associate command
+Set-AzureReservedIPAssociation -ReservedIPName "Group m2mReserve_PublicIPs m2mReserve_PublicIP7" -ServiceName iotportalsit01
+
+#### para retirar a associação de um IP a um cloud service
+Remove-AzureReservedIPAssociation -ReservedIPName "Group m2mReserve_PublicIPs m2mReserve_PublicIP7" -ServiceName iotportalsit01
+
+
+
+Set-AzureReservedIPAssociation -ReservedIPName "GGroup cf-in-a-box CF_IN_A_BOX_Public_ReservedIP" -ServiceName cf-in-a-box

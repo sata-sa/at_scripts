@@ -1,0 +1,45 @@
+﻿## Emanuel Almeida - 2017.08.09
+## Criado quando se clonou os discos da maquina m2mbilsit1 para a m2mbildev1
+
+ 
+login in AZURE CLI
+
+az login -u <username> -p <password>
+
+-------------------------------------------------------------------------------
+
+Create the NIC using az network nic create.
+
+az network nic create -g SG_IoT_Global-RG --vnet-name Cloud-Novabase-Network --subnet N10-254-3_Subnet-1 --name m2mbildev1-PrimaryNic --private-ip-address 10.254.3.62 --network-security-group Safe_Access_From_Internet
+
+-------------------------------------------------------------------------------
+Maquina de origem deve estar stopped
+Copiar discos maquina origem:
+
+az storage blob copy start --source-uri https://m2mbilling.blob.core.windows.net/vhds/m2mbilsit1.vhd --destination-container vhds --account-name m2mbilling --destination-blob m2mbildev1.vhd
+
+Description:
+az storage blob copy start \
+	--source-uri https://m2mbilling.blob.core.windows.net/vhds/m2mbilsit1.vhd \ (URI do disco de origem)
+	--account-name m2mbilling \	(Storage account destino)
+	--destination-container vhds \	(Container Destino na Storage account)
+	--destination-blob m2mbildev1.vhd (Nome do novo disco)
+-------------------------------------------------------------------------------
+
+Create machine:
+
+example
+az vm create --resource-group SG_IoT_Global-RG --name m2mbildev1 --admin-username celfocus --admin-password Novabase123!! --nics m2mbildev1-PrimaryNic --size Standard_A2m_v2 --os-type Linux --use-unmanaged-disk --attach-os-disk https://m2mbilling.blob.core.windows.net/vhds/m2mbildev1.vhd
+
+
+Description:
+
+az vm create \
+	--resource-group SG_IoT_Global-RG \	(Resource-group no exemplo)
+	--name m2mbildev1 \				(Nome da nova maquina)
+	--admin-username celfocus \			
+	--admin-password M2Miitc2017! \
+	--nics m2mbildev1-PrimaryNic \	(Nome da placa de rede)
+	--size Standard_A2m_v2 \			(Tipo de processador)
+	--os-type Linux \					(Sistema operativo)
+	--use-unmanaged-disk --attach-os-disk https://m2mbilling.blob.core.windows.net/vhds/m2mbildev1.vhd

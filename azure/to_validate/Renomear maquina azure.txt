@@ -1,0 +1,28 @@
+Disks - copiar VHD URI
+
+https://portalvhdsfkwgvp6y6bggd.blob.core.windows.net/vhds/iotportalsit02-os.vhd
+
+Plana de Rede antiga
+iotportalsit02-PrimaryNic
+Private IP:10.254.3.14
+
+old security group:
+NB_CF_OVH 
+new security group:
+Safe_Access_From_Internet 
+
+Virtual Network:Cloud-Novabase-Network/
+Vurtual subnetwork:N10-254-3_Subnet-1 
+
+- apagar a maquina no azure
+
+- apagar a plana de rede - iotportalsit02-PrimaryNic
+
+- criar a placa de rede
+
+az network nic create -g SG_IoT_Global-RG --vnet-name Cloud-Novabase-Network --subnet N10-254-3_Subnet-1 --name m2mportalsit01-PrimaryNic --private-ip-address 10.254.3.14 --network-security-group Safe_Access_From_Internet
+
+
+criar a maquina:
+
+az vm create --resource-group SG_IoT_Global-RG --name m2mportalsit01 --nics m2mportalsit01-PrimaryNic --size Standard_A2m_v2 --os-type Linux --use-unmanaged-disk --attach-os-disk https://portalvhdsfkwgvp6y6bggd.blob.core.windows.net/vhds/iotportalsit02-os.vhd

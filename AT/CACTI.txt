@@ -1,0 +1,28 @@
+
+
+
+
+10.191.33.167
+
+
+mysqlcheck -c cacti -p aplpass
+mysqlcheck -p --auto-repair --databases cacti
+/etc/init.d/mysqld stop
+/etc/init.d/mysqld start
+
+
+service httpd status
+service httpd stop
+service httpd start
+
+
+
+/var/lib/cacti/cli
+php -q add_device.php --description="TESTE123" --ip="TESTE123.FQDN" --template=1 --version=2 --community="monitoring"
+
+php add_device.php --description="a_sucacti" --ip="10.191.61.178" --template=10 --version=2 --community="monitoring"
+php add_graphs.php
+
+
+
+

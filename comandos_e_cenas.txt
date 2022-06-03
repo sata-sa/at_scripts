@@ -1,0 +1,371 @@
+
+
+
+=====================================================================================================================================================
+
+chage -d YYYY-MM-DD USER
+
+
+=====================================================================================================================================================
+
+getent group |grep NB19279
+
+
+=====================================================================================================================================================
+
+vg1064yr:lanselmo:/home/lanselmo $ instantclient_18_3/sqlplus RSAUTOMATION/'Pand0ra!'@"(DESCRIPTION = (ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = vgem001d1a-s.dc.sedc.internal.vodafone.com)(PORT = 33000)))(CONNECT_DATA = (SERVICE_NAME = CIASAUTO_TAF.prod.it)))"
+
+
+=====================================================================================================================================================
+
+kubectl exec -it delivery-cms-generic-d88fc8796-c8k8c /opt/apache/karaf/bin/client -- bundle:list | grep "Digital Journey :: Apps :: Foundation App" | awk '{print $3}'
+
+kubectl cp /tmp/nginx.conf delivery-nginx-ingress-controller-5f784b645d-8d278:/etc/nginx/nginx.conf
+
+
+=====================================================================================================================================================
+
+fdisk -l
+
+fdisk /dev/sdc (n p 1 enter enter t 8e p w)
+
+fdisk -l
+
+vgs && vgcreate VG_APP /dev/sdc1 && vgs && lvcreate -n app -l 100%FREE VG_APP && vgs && lvs && mkfs -t ext4 /dev/mapper/VG_APP-app
+
+vim /etc/fstab
+/dev/mapper/VG_APP-app  /opt/app                ext4    defaults        1 2
+
+mkdir /opt/app && mount -a && chown oracle:oinstall /opt/app/ && df -h
+
+--------------------------
+
+Aumentar um LVS
+
+fdisk /dev/sdc (n p 1 enter enter t enter 8e p w)
+vgextend VG_APP /dev/sdc2
+lvextend -l +100%FREE /dev/mapper/VG_APP-app
+resize2fs /dev/mapper/VG_APP-app
+
+
+=====================================================================================================================================================
+
+ls -larth /usr/share/zoneinfo/Portugal && ls -larth /etc/localtime
+rm -rf /etc/localtime && ln -sf /usr/share/zoneinfo/Portugal /etc/localtime && ls -larth /etc/localtime
+date
+
+
+=====================================================================================================================================================
+
+waagent --version
+cd /tmp && wget -c https://github.com/Azure/WALinuxAgent/archive/v2.2.25.zip && unzip -o v2.2.25.zip && cd WALinuxAgent-2.2.25 && python setup.py install
+#se necessario -> yum install -y python-setuptools
+vim /etc/waagent.conf
+service waagent restart && waagent --version
+# RHEV6 # chkconfig | grep waagent  ### if not present then; -> chkconfig --add waagent && chkconfig waagent on
+# RHEV7 # use systemctl 
+
+cd /tmp && wget -c https://github.com/Azure/WALinuxAgent/archive/v2.2.31.zip && unzip -o v2.2.31* && cd WALinuxAgent-2.2.31 && python setup.py install && service waagent restart && waagent --version && chkconfig --add waagent && chkconfig waagent on
+
+## Remover da pasta /tmp os ficheiros de instalacao
+cd /tmp && wget -c https://github.com/Azure/WALinuxAgent/archive/v2.2.31.zip && unzip -o v2.2.31* && cd WALinuxAgent-2.2.31 && python setup.py install && service waagent restart && waagent --version && cd /tmp/ && rm -rf /tmp/WA* /tmp/v2.2.*
+
+
+=====================================================================================================================================================
+
+sestatus
+setenforce 0
+vim /etc/sysconfig/selinux           #SELINUX=disabled
+sestatus
+
+
+=====================================================================================================================================================
+
+lsattr test.txt
+
+Attributes a (append mode) or i (immutable) present would prevent your rm. If they're there, then
+
+chattr -ai test.txt
+
+
+=====================================================================================================================================================
+
+swapoff -a && swapon -a
+
+## OLD SCHOOL ##
+dd if=/dev/zero of=/swapfile bs=1024 count=4194304      4096MB*1024=4194304kb
+dd if=/dev/zero of=/mnt/resource/swapfile bs=1024 count=8388608
+chmod 0600 /mnt/resource/swapfile
+mkswap /mnt/resource/swapfile
+swapon /mnt/resource/swapfile
+# FSTAB FILE #
+/mnt/resource/swapfile          swap            swap    defaults        0 0
+
+OR
+
+## Using azure agent ##
+vim /etc/waagent.conf
+ResourceDisk.Format=y
+ResourceDisk.Filesystem=ext4
+ResourceDisk.MountPoint=/mnt/resource
+ResourceDisk.EnableSwap=y
+ResourceDisk.SwapSizeMB=4096 / 8192
+
+
+=====================================================================================================================================================
+
+nc -vz 10.254.3.86 1521
+
+
+=====================================================================================================================================================
+
+yum list available
+
+
+=====================================================================================================================================================
+
+tar -zcvf archive.tar.gz directory/    	## compress
+tar -zxvf archive.tar.gz  				## decompress
+
+
+=====================================================================================================================================================
+
+systemctl list-unit-files
+systemctl | grep running
+
+
+=====================================================================================================================================================
+
+cp .Xauthority /tmp/.Xauthority.jsimes
+chmod 777 /tmp/.Xauthority.jsimes
+sudo su - oracle
+cp /tmp/.Xauthority.jsimes .Xauthority
+cd /opt/SP/oracle/obi/Middleware/Oracle_ODI1/oracledi/client
+
+
+=====================================================================================================================================================
+
+# vim ~/.vimrc
+colo darkblue
+syntax on
+set background=light
+
+
+=====================================================================================================================================================
+
+set +o pipefail
+
+
+=====================================================================================================================================================
+
+vgpa56vr:ralmeida:/home/ralmeida $ xauth list
+vgpa56vr/unix:17  MIT-MAGIC-COOKIE-1  b3aa501733d9100470e562cac567fcc7
+vgpa56vr/unix:20  MIT-MAGIC-COOKIE-1  e47718b6f73ac7ccfb8e31899535490f
+
+vgpa56vr:ralmeida:/home/ralmeida $ echo $DISPLAY
+localhost:20.0
+
+
+vgpa56vr:ralmeida:/home/ralmeida $ sudo su - cmplus
+[sudo] password for ralmeida: 
+vgpa56vr:cmplus:/opt/SP/cmplus/home $ xauth add vgpa56vr/unix:20  MIT-MAGIC-COOKIE-1  e47718b6f73ac7ccfb8e31899535490f
+vgpa56vr:cmplus:/opt/SP/cmplus/home $ export DISPLAY=localhost:20.0
+
+
+=====================================================================================================================================================
+###############
+### FROM AT ###
+###############
+-------------- aumentar discos ------------------------------------------------------------------------------------------------------------
+fdisk -l
+pvcreate /dev/vda5
+vgs
+vgextend vg_plinmstr /dev/vda5
+vgs
+lvs
+df -h
+fdisk -l
+pvs
+lslbk
+lvextend -L+30G /dev/mapper/vg_plinmstr-lv_weblogic
+resize2fs /dev/mapper/vg_plinmstr-lv_weblogic 
+
+
+-------------- criar lv -------------------------------------------------------------------------------------------------------------------
+cd /oracle/
+ls
+mkdir oggdata
+chown oracle:dba oggdata
+lvs
+lvcreate -L20G -n oggdata data_vg
+lvs
+vi /etc/fstab
+mkfs.ext4 /dev/mapper/data_vg-oggdata
+tune2fs -m 1 /dev/mapper/data_vg-oggdata
+mount -a
+df -h
+vgs
+lvs
+vgdisplay
+lvdisplay 
+
+
+-------------- matar todos os processos java ----------------------------------------------------------------------------------------------
+for i in `ps -ef | grep java | awk '{print $2}'`;do kill -9 $i;done
+
+
+-------------- descobrir pid que criou o ficheiro -----------------------------------------------------------------------------------------
+/sbin/fuser -m liftxsd4165326717191548273
+lsof "process"
+
+
+-------------- logrotate conf -------------------------------------------------------------------------------------------------------------
+[root@sucacti101 logrotate.d]# pwd
+/etc/logrotate.d
+
+[root@sucacti101 logrotate.d]# ls
+cacti  cups  dracut  httpd  mysqld  nagios  pnp4nagios  ppp  psacct  snmptt  sssd  subscription-manager  syslog  up2date  yum
+
+[root@sucacti101 logrotate.d]# cat cacti 
+/var/log/cacti/cacti.log {
+	missingok
+	monthly
+	notifempty
+	compress
+	create 0664 cacti apache
+}
+
++
+
+[root@sucacti101 /]vim /etc/logrotate.conf
+
+
+-------------- aumentar disco suzoras -----------------------------------------------------------------------------------------------------
+lvextend -L +xxG /dev/data_vg/oradata1 (xx=valor se pretende adicionar)
+resize2fs /dev/data_vg/oradata1
+
+ex:
+
+vgs
+lvextend -L +2G /dev/mapper/system_vg-var_lv
+resize2fs /dev/mapper/system_vg-var_lv
+
+-------------- descobrir os portos abertos de uma determinada maquina ---------------------------------------------------------------------
+nmap -O 10.191.34.133
+
+
+-------------- grep por processo para descobrir porto associado ---------------------------------------------------------------------------
+netstat -tulpn | grep 22167
+
+
+-------------- sed a new line into file ---------------------------------------------------------------------------------------------------
+sed -i '$ a texto_a_inserir' ficheiro
+
+
+-------------- Novos users maquinas -------------------------------------------------------------------------------------------------------
+userdel -rf anunes && /usr/sbin/useradd -m anunes -u 3010 -g dba  && echo anunes.2016 | passwd --stdin anunes
+
+
+-------------- Forçar hora da maquina no hardware -----------------------------------------------------------------------------------------
+ntpdate clock // ntpdate 10.191.10.192 // ntpdate 10.191.10.193
+hwclock --systohc
+
+
+-------------- Ver processos agarrados a ficheiros deleted --------------------------------------------------------------------------------
+lsof +L1
+
+
+-------------- Acrescentar /usr/sbin na maquina remota ------------------------------------------------------------------------------------
+ssh weblogic@suljvmaut105 "cat .bash_profile |grep -i path= && sed -i '/PATH=/ s/$/:\/usr\/sbin/' ~/.bash_profile && cat .bash_profile |grep -i path="
+
+
+-------------- MISC -----------------------------------------------------------------------------------------------------------------------
+wall - Envia info para todos os users com login
+
+
+-------------- Acrescentar chaves da maquina onde se executa na outra ---------------------------------------------------------------------
+ssh-copy-id -i ~weblogic/.ssh/id_dsa.pub suapps211         ----------> weblogic enters weblogic
+ssh-copy-id -i ~nagios/.ssh/id_dsa.pub admin@sukvm104      ----------> nagios enters admin
+
+
+-------------- Comando RSYNC SOLARIS -> LINUX ---------------------------------------------------------------------------------------------
+rsync -var --rsync-path=rsync . weblogic@suvjvmgold103:/uploadsonas/ratransito/nstiweb/msgs/carregamentos/Total
+
+
+-------------- Comando contador portas APACHE ---------------------------------------------------------------------------------------------
+netstat -atun | awk '{print $5}' | cut -d: -f2 | sort | uniq -c | sort -n | tail
+
+
+-------------- Cenas - Bruno --------------------------------------------------------------------------------------------------------------
+:(){ :|:& };: - basicamente, bloqueia o pc
+
+
+-------------- Alterar password Users WIKI ------------------------------------------------------------------------------------------------
+php /opt/httpd-2.4.1-01/htdocs/mediawiki/maintenance/changePassword.php --user=Teste --password=teste123
+
+
+-------------- Saber se o no foi desligado por um utilizador ------------------------------------------------------------------------------
+grep "Server shutdown has been requested by weblogic" server.log
+
+
+-------------- Zipagem de Logs ------------------------------------------------------------------------------------------------------------
+find . -type f -name "*.log" -mtime +0 -exec gzip {} \;        -------> Para ficheiros com mais de 24 horas
+find . -type f -name "*.log" -mtime +1 -exec gzip {} \;        -------> Para ficheiros com mais de 48 horas (pelo sim pelo não)
+
+
+-------------- IP da maquina --------------------------------------------------------------------------------------------------------------
+hostname -i
+
+
+-------------- Encontrar Servidores em DEBUG ----------------------------------------------------------------------------------------------
+find . -type f -name "config.xml" | xargs grep "debug" | awk '{print $11}'
+
+
+-------------- Encontrar pastas de logs que não são "links" -------------------------------------------------------------------------------
+find . ! -type l -name "logs"
+
+
+-------------- Find wars ------------------------------------------------------------------------------------------------------------------
+find . -type f -name "*war" -exec ls -larth "{}" \; 2>/dev/null
+
+
+-------------- Tamanho pastas -------------------------------------------------------------------------------------------------------------
+du -hs *
+
+
+-------------- Alteração Root por ssh -----------------------------------------------------------------------------------------------------
+passwd root
+/etc/ssh/sshd_config
+PermitRootLogin YES -> PermitRootLogin no
+service sshd reload
+
+
+-------------- Executar em Anonimo --------------------------------------------------------------------------------------------------------
+unset HISTFILE
+HISTFILE= ; comando
+echo $$       &&        kill -9 sessao
+
+
+-------------- SNMP -----------------------------------------------------------------------------------------------------------------------
+yum install net-snmp
+
+# Editar ficheiro /etc/snmp/snmpd.conf com o seguinte
+vi /etc/snmpd/snmpd.conf
+vi /etc/snmp/snmpd.conf
+----> # sec.name source community
+----> #com2sec notConfigUser default public
+----> rocommunity monitoring 10.0.0.0/8
+
+# executar o seguinte comando para arrancar
+RHEV 6: service snmpd restart
+RHEV 7: systemctl restart snmpd
+
+# executar o seguinte comando para adicionar ao arranque automatico
+RHEV 6: chkconfig snmpd on
+RHEV 7: systemctl enable snmpd
+
+# desligar a firewall se ligada, ou adicionar a porta (161) e remover do arranque 
+RHEV 7: firewall-cmd --state
+RHEV 7: firewall-cmd --add-port=161/udp --permanent
+RHEV 7: firewall-cmd --reload
+

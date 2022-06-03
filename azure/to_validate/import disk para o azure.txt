@@ -1,0 +1,4 @@
+## Emanuel Almeida - 2017.08.09
+## Import Local disk para o azure
+
+az storage blob upload --account-name m2mbilling --container-name vhds --file d:\BaselineV2_1.4-disk001.vhd --name BaselineV2_1.4-disk001.vhd

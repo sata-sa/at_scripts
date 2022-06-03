@@ -1,0 +1,30 @@
+Group m2mReserve_PublicIPs m2mReserve_PublicIP1             13.69.9.136
+Group m2mReserve_PublicIPs m2mReserve_PublicIP2             40.68.247.185
+Group m2mReserve_PublicIPs m2mReserve_PublicIP3             52.166.185.96
+Group m2mReserve_PublicIPs m2mReserve_PublicIP4             40.68.43.6
+Group m2mReserve_PublicIPs m2mReserve_PublicIP5             52.166.184.135
+Group m2mReserve_PublicIPs m2mReserve_PublicIP6             40.68.40.244
+Group m2mReserve_PublicIPs m2mReserve_PublicIP7             40.68.46.184
+Group m2mReserve_PublicIPs m2mReserve_PublicIP8             40.68.41.40
+Group m2mReserve_PublicIPs m2mReserve_PublicIP9             52.174.156.71
+Group m2mReserve_PublicIPs m2mReserve_PublicIP10            52.166.191.11
+
+
+
+
+
+
+OneIT
+Public IP Name	IP
+m2mr12bd-PIP	13.93.50.232
+m2mr12osbdev-PIP	13.93.83.11
+m2mr12osbsit-PIP	13.93.55.239
+m2msmebd-PIP	13.93.122.251
+m2msmebpeldev-PIP	13.95.149.44
+m2msmebpelsit-PIP	13.69.15.82
+m2msmeompdev-PIP	13.95.234.57
+m2msmeompsit-PIP	13.93.87.188
+m2msmeosbdev-PIP	13.95.148.46
+m2msmeosbsit-PIP	13.69.14.128
+m2msmepcrmedev-PIP	13.93.80.37
+m2msmepcrmesit-PIP	13.69.8.143

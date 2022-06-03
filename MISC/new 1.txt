@@ -1,0 +1,75 @@
+
+####################################
+
+mkdir /var/lib/rpm/backup
+cp -a /var/lib/rpm/__db* /var/lib/rpm/backup/
+rm -f /var/lib/rpm/__db.[0-9][0-9]*
+rpm --quiet -qa
+rpm --rebuilddb
+yum clean all
+
+
+
+
+package-cleanup --dupes
+package-cleanup --cleandupes
+
+
+
+https://vault.centos.org/
+https://vault.centos.org/6.0/os/x86_64/repodata/
+
+rpm -e nss-sysinit-3.28.4-1.el6_9.x86_64
+
+
+yum install nc dos2unix vim tree lsof mlocate
+
+
+[root@m2miitcbpelsit yum.repos.d]# cat CentOS-Base.repo
+[base]
+name=CentOS-$releasever - Base
+baseurl=https://vault.centos.org/$releasever/os/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+
+#released updates
+[updates]
+name=CentOS-$releasever - Updates
+baseurl=https://vault.centos.org/$releasever/updates/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+
+#additional packages that may be useful
+[extras]
+name=CentOS-$releasever - Extras
+baseurl=https://vault.centos.org/$releasever/extras/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+
+#additional packages that extend functionality of existing packages
+[centosplus]
+name=CentOS-$releasever - Plus
+baseurl=https://vault.centos.org/$releasever/centosplus/$basearch/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+
+#contrib - packages by Centos Users
+[contrib]
+name=CentOS-$releasever - Contrib
+baseurl=https://vault.centos.org/$releasever/contrib/$basearch/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
+
+
+
+
+
+[root@m2miitcbpelsit yum.repos.d]# cat CentOS-Debuginfo.repo
+[base-debuginfo]
+name=CentOS-6 - Debuginfo
+baseurl=http://debuginfo.centos.org/6/$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-Debug-6
+enabled=0

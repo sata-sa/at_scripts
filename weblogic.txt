@@ -1,0 +1,152 @@
+
+
+
+
+=============== START e STOP ======================================================================
+
+java -cp /app/vodafone/env/fmw/wlserver_10.3/server/lib/weblogic.jar weblogic.WLST /tmp/restart.py 10.254.3.69:7001 temp 123456789 PRT_Server start
+
+
+-------------- Instalar certificados --------------------------------------------------------------
+/opt/java/1.7.0_80/bin/keytool -keystore /weblogic/at02q/security/DemoIdentity.jks -importcert -alias key1 -file TAXUD_ROOT.cer -storepass DemoIdentityKeyStorePassPhrase
+/opt/java/1.7.0_80/bin/keytool -keystore /weblogic/at02q/security/DemoIdentity.jks -importcert -alias key2 -file Ccn2root.cer -storepass DemoIdentityKeyStorePassPhrase
+/opt/java/1.7.0_80/bin/keytool -keystore /weblogic/at02q/security/DemoIdentity.jks -importcert -alias key3 -file CCN2Platform.cer -storepass DemoIdentityKeyStorePassPhrase
+
+/opt/java/1.7.0_80/bin/keytool -keystore /opt/weblogic/12.1.3.0/wlserver/server/lib/DemoTrust.jks -importcert -alias key1 -file TAXUD_ROOT.cer -storepass DemoTrustKeyStorePassPhrase
+/opt/java/1.7.0_80/bin/keytool -keystore /opt/weblogic/12.1.3.0/wlserver/server/lib/DemoTrust.jks -importcert -alias key2 -file Ccn2root.cer -storepass DemoTrustKeyStorePassPhrase
+/opt/java/1.7.0_80/bin/keytool -keystore /opt/weblogic/12.1.3.0/wlserver/server/lib/DemoTrust.jks -importcert -alias key3 -file CCN2Platform.cer -storepass DemoTrustKeyStorePassPhrase
+
+/opt/java/1.7.0_80/bin/keytool -keystore /opt/java/1.7.0_80/jre/lib/security/cacerts -importcert -alias key1 -file TAXUD_ROOT.cer -storepass changeit
+/opt/java/1.7.0_80/bin/keytool -keystore /opt/java/1.7.0_80/jre/lib/security/cacerts -importcert -alias key2 -file Ccn2root.cer -storepass changeit
+/opt/java/1.7.0_80/bin/keytool -keystore /opt/java/1.7.0_80/jre/lib/security/cacerts -importcert -alias key3 -file CCN2Platform.cer -storepass changeit
+
+
+/opt/java/1.7.0_45/bin/keytool -importcert -alias sapubkey.prod.2017 -file ~/chaveAT.cer -keystore keystore.jks
+
+/opt/java/1.7.0_80/bin/keytool -list -v -keystore keystore.jks
+
+/opt/java/1.7.0_80/bin/keytool -changealias -alias sapubkey.prod -destalias sapubkey.prod.old -keystore keystore.jks
+
+/opt/java/1.7.0_80/bin/keytool -delete -alias sapubkey.prd -keystore keystore.jks
+
+
+---------- converter de pfx para cer --------------------------------------------------------------
+openssl pkcs12 -in Chave_Cifra_Publica_AT_2020.pfx -out chaveAT.crt -nokeys -clcerts
+openssl x509 -inform pem -in chaveAT.crt -outform der -out chaveAT.cer
+
+
+
+-------------- Novo KRB5 --------------------------------------------------------------------------
+Exemplo; Apontando para o ficheiro: 
+krb5login.sicrexintra.conf:
+
+com.sun.security.jgss.krb5.initiate {
+ com.sun.security.auth.module.Krb5LoginModule required
+ principal="HTTP/kbwlsprd@RITTA.LOCAL" useKeyTab=true useTicketCache=true
+ keyTab="/opt/sso/kbwlsprd.keytab" storeKey=true debug=true;
+};
+
+com.sun.security.jgss.krb5.accept {
+ com.sun.security.auth.module.Krb5LoginModule required
+ principal="HTTP/kbwlsprd@RITTA.LOCAL" useKeyTab=true useTicketCache=true
+ keyTab="/opt/sso/kbwlsprd.keytab" storeKey=true debug=true;
+};
+
+WSPROFILING {
+ com.sun.security.auth.module.Krb5LoginModule required
+ debug=true;
+};
+
+W3Authenticator {
+ pt.min_fin.dgita.security.auth.W3AuthenticatorLoginModule required
+ debug=true;
+};
+
+
+-------------- INIT SQL DB ------------------------------------------------------------------------
+SQL ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD HH24:MI:SS'​​​
+SQL alter session set nls_date_format = 'YYYY-MM-DD HH24:MI:SS'
+
+
+-------------- Java Version Weblogic --------------------------------------------------------------
+find /weblogic/ -type f -name "*sh" |xargs grep "DEFAULT_SUN_JAVA_HOME="
+
+
+-------------- Encontrar utilizador x na pool y ---------------------------------------------------
+find /weblogic -type f -name "*jdbc*" |xargs grep -i "SITCADICEW"
+find /batch -type f \( -name "*.properties" -o -name "*.sh" \) | xargs grep -i "SITCADICEW"
+
+
+-------------- Casos especificos ------------------------------------------------------------------
+		 Se o servidor disser que esta running mas nao ok nem estiver a correr, na pasta do servidor remover o ../data/nodemanager/*.pid e *.lck
+
+
+-------------- DEBUG ------------------------------------------------------------------------------
+	Remover Debug Servers Weblogical.
+-Dweblogic.debug=true -Dweblogic.StdoutDebugEnabled=true -Dweblogic.log.RedirectStdoutToServerLogEnabled=true -Dsun.security.krb5.debug=true
+
+	v2
+-Dweblogic.StdoutDebugEnabled=true -Dweblogic.debug.DebugSecurityAtn=true -Dvde.logconsole=1 -Dvde.debug=7 -Dsun.security.krb5.debug=true -Dweblogic.debug=true
+
+	v3
+-Dweblogic.StdoutDebugEnabled=true -Dweblogic.debug=true -Dweblogic.kernel.debug=true -Dweblogic.debug.DebugMessaging=true -Dweblogic.debug.DebugConnection=true
+
+
+-------------- DEBUG hprof ------------------------------------------------------------------------
+
+-XX:+HeapDumpOnOutOfMemoryError
+
+
+-------------- Connection Pool Gridlink -----------------------------------------------------------
+jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=SDP)(HOST=sudm1db01-ibvip.ritta.local)(PORT=1522))(ADDRESS=(PROTOCOL=SDP)(HOST=sudm1db02-ibvip.ritta.local)(PORT=1522))(ADDRESS=(PROTOCOL=SDP)(HOST=sudm1db03-ibvip.ritta.local)(PORT=1522))(ADDRESS=(PROTOCOL=SDP)(HOST=sudm1db04-ibvip.ritta.local)(PORT=1522)))(CONNECT_DATA=(SERVICE_NAME=AOL01PRD.AT.PT)))
+
+
+-------------- Comandos executados na maquina testes ----------------------------------------------
+    Apache
+         /opt/httpd-2.4.10/bin/apachectl -k start/stop
+    ou (preferencial)
+         service apachectl stop && service apachectl start
+
+
+    WebLogic
+         A consola das aplicações encontra-se na sudomain.
+    
+         /opt/weblogic12.1.1/wlserver_12.1/server/bin/nohup startNodeManager.sh &
+         # porto node manager 5556
+
+         /opt/weblogic12.1.1/user_projects/domains/teste/nohup startWebLogic.sh &
+         # http://10.191.37.237:7001/console/
+
+         /opt/weblogic12.1.1/user_projects/domains/teste/servers/AdminServer/security/boot.properties
+         #conteudo ficheiro para auto-login:
+         username=admin
+         password=welcome1
+
+-------------- Desencriptar Pass's Weblogic Pools--------------------------------------------------
+
+         Desencriptar passwords weblogic
+
+         Ficheiro .dat no ./security do dominio
+         SerializedSystemIni.dat 
+
+         + password do ./config/jdbc/
+
+    ex.
+         {AES}/5ZrzV2ETfHwwzw+56fJUZkukm29HE5jznRicim8+Yc=
+
+         ir a suargfi, na home do root (ex) e colocar o 
+
+         decryptpasswd.py
+         SerializedSystemIni.dat
+
+    depois
+
+         cd $WL_HOME/server/bin
+         . ./setWLSEnv.sh
+
+    e no fim
+
+         java weblogic.WLST decryptpasswd.py
+
+
+

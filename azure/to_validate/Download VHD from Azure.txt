@@ -1,0 +1,27 @@
+###########################
+Download de VHD do Azure!
+
+
+0.
+Activar o proxy server no powershell, mandatorio através da Novabase
+[System.Net.WebRequest]::DefaultWebProxy.Credentials = [System.Net.CredentialCache]::DefaultCredentials
+
+1.
+p/ linkar com a conta do Azure a sessão:
+Add-AzureAccount
+
+2.
+Fazer o set da subscrição
+Select-AzureSubscription -SubscriptionId bc3321f8-9d03-499c-8347-89cc51e80f10
+Nota:SubscriptionId esta nas propriedades da maquina virtual
+
+3.
+Fui ao site e coloquei os VHD's como publicos:
+(Não se aplicou aos SSD que precisamos de fazer download)
+
+4.
+Fiz set a 2 variaveis e depois lanço o Save-AzureVhd para começar o download
+
+$sourceVHD = "https://iotportalsit02.blob.core.windows.net:8080/vhds/iotportalsit02-os-1180.vhd"
+$destinationVHD = "D:\VM\Azure\Ciotportalsit02-os.vhd"
+Save-AzureVhd -Source $sourceVHD -LocalFilePath $destinationVHD -NumberOfThreads 5
